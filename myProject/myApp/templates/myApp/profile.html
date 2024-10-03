@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile - Pastry Paradise</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Navbar styling */
+        nav {
+            background-color: #fd1dab;
+            color: white;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        nav ul li {
+            margin-right: 20px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        nav ul li a:hover {
+            background-color: #df78a3;
+        }
+
+        /* Back button styling */
+        .back-button {
+            margin: 20px; /* Add margin for spacing */
+            background-color: #fd1dab; /* Match the navbar color */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            position: relative;
+            top: 60px; /* Position it below the navbar */
+        }
+
+        .back-button:hover {
+            background-color: #df78a3; /* Darker shade on hover */
+        }
+
+        /* Main profile content layout */
+        .profile-content {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+            margin: 120px auto 20px auto;
+            padding: 0 20px;
+            margin-top: 10px;
+        }
+
+        /* My Recipes container */
+        .my-recipes-container {
+            flex: 1; /* Takes up equal space with saved-recipes-container */
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Saved Recipes container */
+        .saved-recipes-container {
+            flex: 1;
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #fd1dab;
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .username {
+            font-size: 30px;
+            color: #000000;
+            font-weight: 500;
+            margin: 20px 0 20px 20px; /* Spacing for the username */
+            margin-top: 100px;
+        }
+
+        /* Individual recipe card */
+        .recipe {
+            margin-bottom: 20px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background-color: #f8f9fa;
+        }
+
+        .recipe h2 {
+            color: #fd1dab;
+        }
+
+        .recipe img {
+            max-width: 100%;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+
+        .delete-button {
+            background-color: #ff51dc;
+            color: rgb(0, 0, 0);
+            border: none;
+            border-radius: 5px;
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+        }
+
+        .delete-button:hover {
+            background-color: darkred;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #fd1dab;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+            width: 100%;
+            position: fixed;
+            bottom: 0;
+        }
+
+        footer p {
+            margin: 0;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .profile-content {
+                flex-direction: column;
+            }
+
+            .my-recipes-container, .saved-recipes-container {
+                flex: none;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav>
+        <div class="logo">
+            <a href="{% url 'homepage' %}" style="color: white; text-decoration: none;">
+                <h2>Pastry Paradise</h2>
+            </a>
+        </div>
+        <ul>
+            <li><a href="{% url 'homepage' %}">Home</a></li>
+            {% if user.is_authenticated %}
+                <li><a href="{% url 'profile' %}">My Profile</a></li>
+                <li><a href="{% url 'create_recipe' %}">Create Recipe</a></li>
+                <li><a href="{% url 'logout' %}">Logout</a></li>
+            {% else %}
+                <li><a href="{% url 'login' %}">Login</a></li>
+                <li><a href="{% url 'register' %}">Register</a></li>
+            {% endif %}
+            <li><a href="{% url 'all_recipes' %}">All Recipes</a></li>
+        </ul>
+    </nav>
+
+    <!-- Back Button -->
+    <div>
+        <a href="{% url 'homepage' %}">
+            <button class="back-button">Back to Home</button>
+        </a>
+    </div>
+
+    <div>
+        {% if user.is_authenticated %}
+        <div class="username">
+            Welcome, {{ user.username }}!  
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Main Profile Content -->
+    <div class="profile-content">
+        <!-- My Recipes Container (Left) -->
+        <div class="my-recipes-container">
+            <h1>Your Recipes</h1>
+            {% if recipes %}
+                {% for recipe in recipes %}
+                <div class="recipe">
+                    <h2>{{ recipe.title }}</h2>
+                    <p><strong>Ingredients:</strong> {{ recipe.ingredients }}</p>
+                    <p><strong>Steps:</strong> {{ recipe.steps }}</p>
+                    {% if recipe.image %}
+                        <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}">
+                    {% endif %}
+                    <form method="POST" action="{% url 'delete_recipe' recipe.id %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="delete-button">Delete Recipe</button>
+                    </form>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p>You have not created any recipes yet.</p>
+            {% endif %}
+        </div>
+
+        <!-- Saved Recipes Container (Right) -->
+        <div class="saved-recipes-container">
+            <h1>Your Saved Recipes</h1>
+            {% if saved_recipes %}
+                {% for saved_recipe in saved_recipes %}
+                    <div class="recipe">
+                        <h2>{{ saved_recipe.recipe.title }}</h2>
+                        <p><strong>Ingredients:</strong> {{ saved_recipe.recipe.ingredients }}</p>
+                        <p><strong>Steps:</strong> {{ saved_recipe.recipe.steps }}</p>
+                        {% if saved_recipe.recipe.image %}
+                            <img src="{{ saved_recipe.recipe.image.url }}" alt="{{ saved_recipe.recipe.title }}">
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p>You have not saved any recipes yet.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Pastry Paradise. All Rights Reserved.</p>
+    </footer>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

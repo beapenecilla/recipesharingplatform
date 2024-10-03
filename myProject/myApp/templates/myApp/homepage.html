@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pastry Paradise - Recipe Sharing Platform</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <style>
+        /* General body styles */
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+
+        /* Navbar styling */
+        nav {
+            background-color: #fd1dab;
+            color: white;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        nav ul li {
+            margin-right: 20px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        nav ul li a:hover {
+            background-color: #df78a3;
+        }
+
+        /* Hero section */
+        .hero {
+            background-image: url('https://example.com/path-to-hero-image.jpg');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            padding: 80px 20px;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: black;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: black;
+        }
+
+        .hero .btn-primary {
+            background-color: #e05c93;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            transition: background-color 0.3s;
+        }
+
+        .hero .btn-primary:hover {
+            background-color: #d14e80;
+        }
+
+        /* Image container styling */
+        .image-container {
+            display: flex;
+            justify-content: space-between; /* Space images evenly */
+            align-items: center;
+            flex-wrap: wrap; /* Allow wrapping on smaller screens */
+            margin: 40px auto;
+            max-width: 1200px;
+            padding: 20px;
+            margin-top: -25px;
+        }
+
+        .image-container img {
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 18%; /* Set width to allow 5 images in a row */
+            margin: 10px; /* Spacing between images */
+            max-width: 200px; /* Optional: Set max width to keep images uniform */
+            height: auto; /* Maintain aspect ratio */
+        }
+
+        /* Welcome message styling */
+        .welcome-message {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .welcome-message h2 {
+            font-size: 2rem;
+            color: #333;
+        }
+
+        .welcome-message p {
+            font-size: 1.2rem;
+            color: #666;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #fd1dab;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            margin-top: 50px; /* Ensures footer has space above */
+        }
+
+        footer p {
+            margin: 0;
+        }
+
+        /* Ensure the footer doesn't overlap */
+        body {
+            padding-bottom: 50px;
+        }
+    </style>
+</head>
+<body>
+
+    {% load static %}
+    <!-- Navbar -->
+    <nav>
+        <div class="logo">
+            <a href="{% url 'homepage' %}" style="color: white; text-decoration: none;">
+                <h2>Pastry Paradise</h2>
+            </a>
+        </div>
+        <ul>
+            <li><a href="{% url 'homepage' %}">Home</a></li>
+            {% if user.is_authenticated %}
+                <li><a href="{% url 'profile' %}">My Profile</a></li>
+                <li><a href="{% url 'create_recipe' %}">Create Recipe</a></li>
+                <li><a href="{% url 'logout' %}">Logout</a></li>
+            {% else %}
+                <li><a href="{% url 'login' %}">Login</a></li>
+                <li><a href="{% url 'register' %}">Register</a></li>
+            {% endif %}
+            <li><a href="{% url 'all_recipes' %}">All Recipes</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>Discover & Share Amazing Recipes</h1>
+        <p>Join a vibrant community of pastry lovers, create your own recipes, and explore the best of the baking world.</p>
+        {% if user.is_authenticated %}
+        <a href="{% url 'create_recipe' %}" class="btn btn-primary">Create Your Recipe</a>
+        <a href="{% url 'all_recipes' %}" class="btn btn-primary">Check out our Recipes!</a>
+        {% else %}
+        <a href="{% url 'register' %}" class="btn btn-primary">Register Now!</a>
+        <a href="{% url 'all_recipes' %}" class="btn btn-primary">Check out our Recipes!</a>
+        {% endif %}
+    </section>
+
+    <!-- Image Container -->
+    <div class="image-container">
+        <img src="{% static 'myApp/image6.jpg' %}" alt="Delicious Pastry 1">
+        <img src="{% static 'myApp/image7.jpg' %}" alt="Delicious Pastry 2">
+        <img src="{% static 'myApp/image8.jpg' %}" alt="Delicious Pastry 3">
+        <img src="{% static 'myApp/image4.jpg' %}" alt="Delicious Pastry 4">
+        <img src="{% static 'myApp/image5.jpg' %}" alt="Delicious Pastry 5">
+    </div>
+
+    <!-- Welcome Message -->
+    <div class="welcome-message">
+        {% if user.is_authenticated %}
+            <h2>Hello, {{ user.username }}!</h2>
+            <p>Start sharing your amazing pastry recipes today!</p>
+        {% else %}
+            <h3>Welcome, guest!</h3>
+            <p>Please login or register to unlock all features of Pastry Paradise.</p>
+        {% endif %}
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Pastry Paradise. All Rights Reserved.</p>
+    </footer>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
