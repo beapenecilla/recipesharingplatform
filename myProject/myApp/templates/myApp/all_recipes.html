@@ -1,202 +1,174 @@
 {% load static %}
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Pastry Paradise - Recipe Sharing Platform{% endblock %}</title>
-
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
-
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-
-    <!-- Custom Styles -->
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f8f9fa;
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-
-        /* Navbar styling */
-        nav {
-            background-color: #fd1dab;
-            color: white;
-            padding: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            width: 100%;
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 1000;
-        }
-
-        nav ul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            display: flex;
-        }
-
-        nav ul li {
-            margin-right: 20px;
-        }
-
-        nav ul li a {
-            text-decoration: none;
-            padding: 8px 15px;
-            border-radius: 5px;
-            transition: background-color 0.3s;
-        }
-
-        nav ul li a:hover {
-            background-color: #df78a3;
-        }
-
-       /* Custom Back Button Color */
-.btn-pink {
-    background-color: #fd1dab; /* Set to your desired pink color */
-    color: white;
-    margin-top: 150px;
-}
-
-.btn-pink:hover {
-    background-color: #df78a3; /* A lighter shade for hover effect */
-}
-
-
-        /* Container styling */
-        .container {
-            background-color: white;
-            border-radius: 10px;
-            padding: 40px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 800px;
-            margin: 20px auto; /* Adjusted margin */
-        }
-
-        h1 {
-            color: #fd1dab;
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 30px;
-            text-align: center;
-        }
-
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        li {
-            margin-bottom: 20px;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            background-color: #f8f9fa;
-            display: flex; /* Flexbox for aligning items */
-            align-items: center; /* Center items vertically */
-        }
-
-        a {
-            color: #fd1dab;
-            font-weight: 500;
-            text-decoration: none;
-            margin-left: 10px; /* Space between image and text */
-        }
-
-        a:hover {
-            text-decoration: underline;
-        }
-
-        /* Image styling */
-        .recipe-image {
-            max-width: 100px; /* Set max width for images */
-            height: auto; /* Maintain aspect ratio */
-            margin-right: 20px; /* Space between image and text */
-        }
-
-        /* Footer */
-        footer {
-            background-color: #fd1dab;
-            color: white;
-            padding: 10px 0;
-            text-align: center;
-            width: 100%;
-            position: fixed;
-            bottom: 0;
-        }
-
-        footer p {
-            margin: 0;
-        }
-    </style>
-</head>
-<body>
-
-    <!-- Navbar -->
-    <nav>
-        <div class="logo">
-            <a href="{% url 'homepage' %}" style="color: white; text-decoration: none;">
-                <h2>Pastry Paradise</h2>
-            </a>
-        </div>
-        <ul>
-            <li><a href="{% url 'homepage' %}">Home</a></li>
-            {% if user.is_authenticated %}
-                <li><a href="{% url 'profile' %}">My Profile</a></li>
-                <li><a href="{% url 'create_recipe' %}">Create Recipe</a></li>
-                <li><a href="{% url 'logout' %}">Logout</a></li>
-            {% else %}
-                <li><a href="{% url 'login' %}">Login</a></li>
-                <li><a href="{% url 'register' %}">Register</a></li>
-            {% endif %}
-            <li><a href="{% url 'all_recipes' %}">All Recipes</a></li>
-        </ul>
-    </nav>
-
-    <div class="back-button">
-        <a href="{% url 'homepage' %}" class="btn btn-pink active">Back to Home</a>
-    </div>
-
-    <!-- Main Content -->
-    <div class="container">
-        <h1>All Recipes</h1>
-        <ul>
-            {% for recipe in recipes %}
-                <li>
-                    {% if recipe.image %}
-                        <img src="{{ recipe.image.url }}" alt="Image of {{ recipe.title }}" class="recipe-image">
-                    {% endif %}
-                    <a href="{% url 'recipe_detail' recipe.pk %}">{{ recipe.title }}</a> by {{ recipe.created_by.username }}
-                    {% if request.user == recipe.created_by %}
-                        | <a href="{% url 'edit_recipe' recipe.pk %}">Edit</a>
-                    {% endif %}
-                </li>
-            {% empty %}
-                <li>No recipes available.</li>
-            {% endfor %}
-        </ul>
-    </div>
-
-    <!-- Footer -->
-    <footer>
-        <p>&copy; 2024 Recipe Sharing Platform. All Rights Reserved.</p>
-    </footer>
-
-    <!-- Bootstrap JS and dependencies -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
-</html>
+ <!DOCTYPE html>
+ <html lang="en">
+ <head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>{% block title %}Pastry Paradise- Recipe Sharing Platform{% endblock %}</title>
+ <!-- Google Fonts-->
+ <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400&display=swap"
+ rel="stylesheet">
+ <!-- Bootstrap CSS-->
+ <link rel="stylesheet"
+ href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+ <!-- Custom Styles-->
+ <style>
+ body {
+ font-family: 'Cinzel', serif;
+ margin: 0;
+ padding: 0;
+ background-color: #f8f9fa;
+ display: flex;
+ flex-direction: column;
+ min-height: 100vh;
+ }
+ /* Navbar styling */
+ nav {
+ background-color: #87ceeb;
+ color: white;
+ padding: 10px;
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+ width: 100%;
+ position: fixed;
+ top: 0;
+ left: 0;
+ z-index: 1000;
+ }
+ nav ul {
+ list-style-type: none;
+ margin: 0;
+ padding: 0;
+display: flex;
+ }
+ nav ul li {
+ margin-right: 20px;
+ }
+ nav ul li a {
+ color: white;
+ text-decoration: none;
+ padding: 8px 15px;
+ }
+ nav ul li a:hover {
+ background-color: #df78a3;
+ }
+ /* Back Button Styling */
+ .btn-pink {
+ background-color: #87ceeb;
+ color: white;
+ margin: 20px auto;
+ display: block;
+ text-align: center;
+ padding: 10px 20px;
+ border-radius: 5px;
+ }
+ .btn-pink:hover {
+ background-color: #df78a3;
+ }
+ h1 {
+ color: #87ceeb;
+ font-size: 2rem;
+ font-weight: 700;
+ margin: 60px 0 20px; /* Spacing adjusted for fixed navbar */
+ text-align: center;
+ }
+ ul {
+ list-style-type: none;
+ padding: 0;
+ }
+ li {
+ margin-bottom: 20px;
+ padding: 20px;
+border: 1px solid #ddd;
+ border-radius: 10px;
+ background-color: #f8f9fa;
+ display: flex;
+ align-items: center;
+ }
+ a {
+ color: #87ceeb;
+ font-weight: 500;
+ text-decoration: none;
+ margin-left: 10px;
+ }
+ a:hover {
+ text-decoration: underline;
+ }
+ /* Image styling */
+ .recipe-image {
+ width: 100px; /* Set width for images */
+ height: 100px; /* Set height for images */
+ border-radius: 50%; /* Circular shape */
+ margin-right: 20px; /* Space between image and text */
+ }
+ /* Footer */
+ footer {
+ background-color: #87ceeb;
+ color: white;
+ padding: 10px 0;
+ text-align: center;
+ width: 100%;
+ position: relative; /* Change position to relative */
+ bottom: 0;
+ }
+ footer p {
+ margin: 0;
+ }
+ </style>
+ </head>
+ <body>
+ <!-- Navbar-->
+ <nav>
+ <div class="logo">
+ <a href="{% url 'homepage' %}" style="color: white; text-decoration: none;">
+<h2>Pastry Paradise</h2>
+ </a>
+ </div>
+ <ul>
+ <li><a href="{% url 'homepage' %}">Home</a></li>
+ {% if user.is_authenticated %}
+ <li><a href="{% url 'profile' %}">My Profile</a></li>
+ <li><a href="{% url 'create_recipe' %}">Create Recipe</a></li>
+ <li><a href="{% url 'logout' %}">Logout</a></li>
+ {% else %}
+ <li><a href="{% url 'login' %}">Login</a></li>
+ <li><a href="{% url 'register' %}">Register</a></li>
+ {% endif %}
+ <li><a href="{% url 'all_recipes' %}">All Recipes</a></li>
+ </ul>
+ </nav>
+ <h1>All Recipes</h1>
+ <ul>
+ {% for recipe in recipes %}
+ <li>
+ {% if recipe.image %}
+ <img src="{{ recipe.image.url }}" alt="Image of {{ recipe.title }}"
+ class="recipe-image">
+ {% endif %}
+ <a href="{% url 'recipe_detail' recipe.pk %}">{{ recipe.title }}</a> by {{
+ recipe.created_by.username }}
+ {% if request.user == recipe.created_by %}
+ | <a href="{% url 'edit_recipe' recipe.pk %}" style="color: #87ceeb;">Edit</a>
+ {% endif %}
+ </li>
+ {% empty %}
+ <li>No recipes available.</li>
+ {% endfor %}
+ </ul>
+ <!-- Back to Home Button-->
+ <div class="back-button">
+ <a href="{% url 'homepage' %}" class="btn btn-pink active">Back to Home</a>
+ </div>
+ <!-- Footer-->
+ <footer>
+ <p>&copy; 2024 Recipe Sharing Platform. All Rights Reserved.</p>
+ </footer>
+ <!-- Bootstrap JS and dependencies-->
+ <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script
+ src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+ <script
+ src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+ </body>
+ </html>
