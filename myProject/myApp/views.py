@@ -6,6 +6,11 @@ from django.contrib.auth.decorators import login_required
 from .forms import RecipeForm
 from .models import Recipe, Comment, Rating, SavedRecipe
 from django.db import models 
+#new for all recipes
+from django.db.models import Q
+#new for editable profile
+from django.shortcuts import render, redirect
+from .models import UserProfile
 
 # Homepage View
 def homepage(request):
@@ -104,6 +109,16 @@ def add_comment(request, pk):
 @login_required
 def add_rating(request, pk):
     recipe = get_object_or_404(Recipe, pk=pk)
+
+#new
+def all_recipes(request):
+    search_query = request.GET.get('search', '')
+    recipes = Recipe.objects.all()
+
+    if search_query:
+        recipes = recipes.filter(Q(title__icontains=search_query) | Q(created_by__username__icontains=search_query))
+
+    return render(request, 'myApp/all_recipes.html', {'recipes': recipes, 'search_query': search_query})
     
     # Check if the user is the creator of the recipe
     if recipe.created_by == request.user:
@@ -136,3 +151,24 @@ def save_recipe(request, pk):
     saved_recipe, created = SavedRecipe.objects.get_or_create(user=request.user, recipe=recipe)
     return redirect('recipe_detail', pk=recipe.pk)
 
+#new editable profile
+@login_required
+def update_profile(request):
+    if request.method == 'POST':
+        user = request.user
+        username = request.POST.get('username')
+        profile_image = request.FILES.get('profile_image')
+
+        # Update username
+        user.username = username
+        user.save()
+
+        # Update profile image if provided
+        if profile_image:
+            profile = UserProfile.objects.get(user=user)
+            profile.image = profile_image
+            profile.save()
+
+        return redirect('profile')  # Redirect to the profile page after saving
+
+    return render(request, 'profile.html')  # Adjust the template path accordingly

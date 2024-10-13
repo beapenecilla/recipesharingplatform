@@ -44,3 +44,12 @@ class SavedRecipe(models.Model):
 
     def __str__(self):
         return f'Saved Recipe: {self.recipe.title} by {self.user.username}'
+
+#new editable profile
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    bio = models.TextField(blank=True, null=True)
+    profile_image = models.ImageField(upload_to='profile_images/', blank=True, null=True)
+
+    def __str__(self):
+        return self.user.username

@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Profile - Pastry Paradise</title>
 
+    <!-- Load static files -->
+    {% load static %}
+
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
 
@@ -62,8 +65,8 @@
 
         /* Back button styling */
         .back-button {
-            margin: 20px; /* Add margin for spacing */
-            background-color: #fd1dab; /* Match the navbar color */
+            margin: 20px;
+            background-color: #fd1dab;
             color: white;
             border: none;
             border-radius: 5px;
@@ -71,11 +74,11 @@
             cursor: pointer;
             transition: background-color 0.3s;
             position: relative;
-            top: 60px; /* Position it below the navbar */
+            top: 60px;
         }
 
         .back-button:hover {
-            background-color: #df78a3; /* Darker shade on hover */
+            background-color: #df78a3;
         }
 
         /* Main profile content layout */
@@ -91,7 +94,7 @@
 
         /* My Recipes container */
         .my-recipes-container {
-            flex: 1; /* Takes up equal space with saved-recipes-container */
+            flex: 1;
             background-color: white;
             border-radius: 10px;
             padding: 20px;
@@ -119,42 +122,71 @@
             font-size: 30px;
             color: #000000;
             font-weight: 500;
-            margin: 20px 0 20px 20px; /* Spacing for the username */
+            margin: 20px 0 20px 20px;
             margin-top: 100px;
         }
 
-        /* Individual recipe card */
-        .recipe {
+        /* Profile image section */
+        .profile-image-container {
+            text-align: center;
             margin-bottom: 20px;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 10px;
-            background-color: #f8f9fa;
         }
 
-        .recipe h2 {
+        .profile-image {
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+        }
+
+        .settings-icon {
+            cursor: pointer;
+            margin-top: 10px;
+            font-size: 24px;
             color: #fd1dab;
         }
 
-        .recipe img {
-            max-width: 100%;
-            border-radius: 10px;
+        /* Dropdown section */
+        .dropdown-container {
+            display: none;
+            text-align: center;
             margin-top: 10px;
         }
 
-        .delete-button {
-            background-color: #ff51dc;
-            color: rgb(0, 0, 0);
+        .dropdown-container form {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center items horizontally */
+            margin: 0 auto; /* Center the form within the dropdown */
+            width: 100%; /* Ensure the form takes full width */
+            max-width: 400px; /* Optional: Set a max width for the form */
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center items horizontally */
+            margin-bottom: 15px; /* Add some spacing between items */
+            width: 100%; /* Ensure form group takes full width */
+        }
+
+        input[type="file"] {
+            margin-top: 10px; /* Add spacing above the file input */
+            width: auto; /* Ensure the input doesn't stretch full width */
+        }
+
+        .update-button {
+            background-color: #fd1dab;
+            color: white;
             border: none;
             border-radius: 5px;
             padding: 10px 15px;
             cursor: pointer;
             transition: background-color 0.3s;
-            margin-top: 10px;
         }
 
-        .delete-button:hover {
-            background-color: darkred;
+        .update-button:hover {
+            background-color: #df78a3;
         }
 
         /* Footer */
@@ -178,12 +210,19 @@
                 flex-direction: column;
             }
 
-            .my-recipes-container, .saved-recipes-container {
+            .my-recipes-container,
+            .saved-recipes-container {
                 flex: none;
                 width: 100%;
             }
         }
     </style>
+    <script>
+        function toggleDropdown() {
+            const dropdown = document.getElementById("dropdownContainer");
+            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+        }
+    </script>
 </head>
 <body>
 
@@ -223,6 +262,28 @@
         {% endif %}
     </div>
 
+    <!-- Profile Image Section -->
+    <div class="profile-image-container">
+        {% if user.profile_image %}
+            <img src="{{ user.profile_image.url }}" alt="Profile Image" class="profile-image">
+        {% else %}
+            <img src="{% static 'myApp/default_profile.jpg' %}" alt="Default Profile Image" class="profile-image">
+        {% endif %}
+        <div class="settings-icon" onclick="toggleDropdown()">⚙️</div>
+    </div>
+
+    <!-- Dropdown for updating profile -->
+    <div id="dropdownContainer" class="dropdown-container">
+        <form method="POST" action="{% url 'update_profile' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="profile_image">Choose a new profile image:</label>
+                <input type="file" name="profile_image" id="profile_image" class="form-control-file">
+            </div>
+            <button type="submit" class="update-button">Update Profile</button>
+        </form>
+    </div>
+
     <!-- Main Profile Content -->
     <div class="profile-content">
         <!-- My Recipes Container (Left) -->
@@ -237,14 +298,10 @@
                     {% if recipe.image %}
                         <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}">
                     {% endif %}
-                    <form method="POST" action="{% url 'delete_recipe' recipe.id %}" style="display:inline;">
-                        {% csrf_token %}
-                        <button type="submit" class="delete-button">Delete Recipe</button>
-                    </form>
                 </div>
                 {% endfor %}
             {% else %}
-                <p>You have not created any recipes yet.</p>
+                <p>No recipes found.</p>
             {% endif %}
         </div>
 
@@ -253,24 +310,24 @@
             <h1>Your Saved Recipes</h1>
             {% if saved_recipes %}
                 {% for saved_recipe in saved_recipes %}
-                    <div class="recipe">
-                        <h2>{{ saved_recipe.recipe.title }}</h2>
-                        <p><strong>Ingredients:</strong> {{ saved_recipe.recipe.ingredients }}</p>
-                        <p><strong>Steps:</strong> {{ saved_recipe.recipe.steps }}</p>
-                        {% if saved_recipe.recipe.image %}
-                            <img src="{{ saved_recipe.recipe.image.url }}" alt="{{ saved_recipe.recipe.title }}">
-                        {% endif %}
-                    </div>
+                <div class="saved-recipe">
+                    <h2>{{ saved_recipe.title }}</h2>
+                    <p><strong>Ingredients:</strong> {{ saved_recipe.ingredients }}</p>
+                    <p><strong>Steps:</strong> {{ saved_recipe.steps }}</p>
+                    {% if saved_recipe.image %}
+                        <img src="{{ saved_recipe.image.url }}" alt="{{ saved_recipe.title }}">
+                    {% endif %}
+                </div>
                 {% endfor %}
             {% else %}
-                <p>You have not saved any recipes yet.</p>
+                <p>No saved recipes found.</p>
             {% endif %}
         </div>
     </div>
 
     <!-- Footer -->
     <footer>
-        <p>&copy; 2024 Pastry Paradise. All Rights Reserved.</p>
+        <p>&copy; 2024 Pastry Paradise. All rights reserved.</p>
     </footer>
 
     <!-- Bootstrap JS and dependencies -->
