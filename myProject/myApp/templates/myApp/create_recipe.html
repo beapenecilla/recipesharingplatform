@@ -11,7 +11,7 @@
     <style>
         /* General styles */
         body {
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Cinzel', serif;
             margin: 0;
             padding: 0;
             background: white; /* Gradient background */
@@ -28,7 +28,7 @@
 
         /* Navbar styling */
         nav {
-            background-color: #fd1dab;
+            background-color: #87CEEB;
             color: white;
             padding: 15px;
             display: flex;
@@ -61,7 +61,7 @@
         }
 
         nav ul li a:hover {
-            background-color: #df78a3; /* Hover color */
+            background-color: #d6efed; /* Hover color */
         }
 
         /* Back button styling */
@@ -71,7 +71,7 @@
             top: 70px; /* Position just below the navbar */
             left: 20px;
             padding: 10px 15px;
-            background-color: #ff78a3;
+            background-color: #87CEEB;
             color: white;
             text-decoration: none;
             border-radius: 5px;
@@ -81,7 +81,7 @@
         }
 
         .back-button:hover {
-            background-color: #df6789;
+            background-color: #87CEEB;
         }
 
         /* Container styling */
@@ -89,7 +89,7 @@
             max-width: 600px;
             margin: 100px auto; /* Margin top to avoid overlap with fixed navbar */
             padding: 20px;
-            background-color: #ffd3f6; /* Background for container */
+            background-color: #d6efed; /* Background for container */
             border-radius: 10px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Shadow for container */
             animation: slideIn 0.5s forwards; /* Animation for container */
@@ -126,14 +126,14 @@
         }
 
         input:focus, textarea:focus {
-            border-color: #fd1dab; /* Border color on focus */
+            border-color: #87CEEB; /* Border color on focus */
             outline: none; /* Remove default outline */
         }
 
         button {
             margin-top: 20px;
             padding: 10px;
-            background-color: pink;
+            background-color: #d6efed;
             color: rgb(0, 0, 0);
             border: none;
             border-radius: 5px;
@@ -154,7 +154,7 @@
             }
         }
         footer {
-            background-color: #fd1dab;
+            background-color: #87CEEB;
             color: white;
             padding: 10px 0;
             text-align: center;
@@ -181,16 +181,16 @@
             </a>
         </div>
         <ul>
-            <li><a href="{% url 'homepage' %}">Home</a></li>
+            <li><a href="{% url 'homepage' %}">HOME</a></li>
             {% if user.is_authenticated %}
-                <li><a href="{% url 'profile' %}">My Profile</a></li>
-                <li><a href="{% url 'create_recipe' %}">Create Recipe</a></li>
-                <li><a href="{% url 'logout' %}">Logout</a></li>
+                <li><a href="{% url 'profile' %}">MY PROFILE</a></li>
+                <li><a href="{% url 'create_recipe' %}">CREATE RECIPE</a></li>
+                <li><a href="{% url 'logout' %}">LOGOUT</a></li>
             {% else %}
-                <li><a href="{% url 'login' %}">Login</a></li>
-                <li><a href="{% url 'register' %}">Register</a></li>
+                <li><a href="{% url 'login' %}">LOGIN</a></li>
+                <li><a href="{% url 'register' %}">REGISTER</a></li>
             {% endif %}
-            <li><a href="{% url 'all_recipes' %}">All Recipes</a></li>
+            <li><a href="{% url 'all_recipes' %}">ALL RECIPES</a></li>
         </ul>
     </nav>
 

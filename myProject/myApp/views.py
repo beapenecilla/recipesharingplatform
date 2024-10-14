@@ -156,12 +156,12 @@ def save_recipe(request, pk):
 def update_profile(request):
     if request.method == 'POST':
         user = request.user
-        username = request.POST.get('username')
+        ##username = request.POST.get('username')
         profile_image = request.FILES.get('profile_image')
 
         # Update username
-        user.username = username
-        user.save()
+        #user.username = username
+        #user.save()
 
         # Update profile image if provided
         if profile_image:

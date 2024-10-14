@@ -16,7 +16,7 @@
 
     <style>
         body {
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Cinzel', serif;
             margin: 0;
             padding: 0;
             background-color: #f8f9fa;
@@ -27,7 +27,7 @@
 
         /* Navbar styling */
         nav {
-            background-color: #fd1dab;
+            background-color: #87CEEB;
             color: white;
             padding: 10px;
             display: flex;
@@ -60,13 +60,13 @@
         }
 
         nav ul li a:hover {
-            background-color: #df78a3;
+            background-color: #b7d3df;
         }
 
         /* Back button styling */
         .back-button {
             margin: 20px;
-            background-color: #fd1dab;
+            background-color: #87CEEB;
             color: white;
             border: none;
             border-radius: 5px;
@@ -78,7 +78,7 @@
         }
 
         .back-button:hover {
-            background-color: #df78a3;
+            background-color: #b7d3df;
         }
 
         /* Main profile content layout */
@@ -111,7 +111,7 @@
         }
 
         h1 {
-            color: #fd1dab;
+            color: #87CEEB;
             font-size: 1.8rem;
             font-weight: 700;
             margin-bottom: 20px;
@@ -143,7 +143,7 @@
             cursor: pointer;
             margin-top: 10px;
             font-size: 24px;
-            color: #fd1dab;
+            color: #87CEEB;
         }
 
         /* Dropdown section */
@@ -176,7 +176,7 @@
         }
 
         .update-button {
-            background-color: #fd1dab;
+            background-color: #87CEEB;
             color: white;
             border: none;
             border-radius: 5px;
@@ -186,12 +186,12 @@
         }
 
         .update-button:hover {
-            background-color: #df78a3;
+            background-color: #b7d3df;
         }
 
         /* Footer */
         footer {
-            background-color: #fd1dab;
+            background-color: #87CEEB;
             color: white;
             padding: 10px 0;
             text-align: center;
@@ -230,20 +230,20 @@
     <nav>
         <div class="logo">
             <a href="{% url 'homepage' %}" style="color: white; text-decoration: none;">
-                <h2>Pastry Paradise</h2>
+                <h2>PASTRY PARADISE</h2>
             </a>
         </div>
         <ul>
-            <li><a href="{% url 'homepage' %}">Home</a></li>
+            <li><a href="{% url 'homepage' %}">HOME</a></li>
             {% if user.is_authenticated %}
-                <li><a href="{% url 'profile' %}">My Profile</a></li>
-                <li><a href="{% url 'create_recipe' %}">Create Recipe</a></li>
-                <li><a href="{% url 'logout' %}">Logout</a></li>
+                <li><a href="{% url 'profile' %}">MY PROFILE</a></li>
+                <li><a href="{% url 'create_recipe' %}">CREATE RECIPE</a></li>
+                <li><a href="{% url 'logout' %}">LOGOUT</a></li>
             {% else %}
-                <li><a href="{% url 'login' %}">Login</a></li>
-                <li><a href="{% url 'register' %}">Register</a></li>
+                <li><a href="{% url 'login' %}">LOGIN</a></li>
+                <li><a href="{% url 'register' %}">REGISTER</a></li>
             {% endif %}
-            <li><a href="{% url 'all_recipes' %}">All Recipes</a></li>
+            <li><a href="{% url 'all_recipes' %}">ALL RECIPES</a></li>
         </ul>
     </nav>
 

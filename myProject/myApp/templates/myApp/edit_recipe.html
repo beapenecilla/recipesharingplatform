@@ -16,7 +16,7 @@
     <!-- Custom Styles -->
     <style>
         body {
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Cinzel', serif;
             margin: 0;
             padding: 0;
             background-color: #f8f9fa;
@@ -27,7 +27,7 @@
 
         /* Navbar styling */
         nav {
-            background-color: #fd1dab;
+            background-color: #87CEEB;
             color: white;
             padding: 10px;
             display: flex;
@@ -60,7 +60,7 @@
         }
 
         nav ul li a:hover {
-            background-color: #df78a3;
+            background-color: #d6efed;
         }
 
         /* Back button styling */
@@ -68,7 +68,7 @@
             position: fixed;
             top: 70px; /* Position below the navbar */
             left: 20px;
-            background-color: #fd1dab;
+            background-color: #87CEEB;
             color: white;
             padding: 10px 15px;
             border: none;
@@ -79,7 +79,7 @@
         }
 
         .back-button:hover {
-            background-color: #df78a3;
+            background-color: #d6efed;
         }
 
         /* Container styling */
@@ -94,7 +94,7 @@
         }
 
         h1 {
-            color: #fd1dab;
+            color: #87CEEB;
             font-size: 2rem;
             font-weight: 700;
             margin-bottom: 30px;
@@ -120,7 +120,7 @@
         }
 
         button {
-            background-color: #fd1dab;
+            background-color: #87CEEB;
             color: white;
             padding: 10px;
             border: none;
@@ -131,12 +131,12 @@
         }
 
         button:hover {
-            background-color: #df78a3;
+            background-color: #d6efed;
         }
 
         /* Footer */
         footer {
-            background-color: #fd1dab;
+            background-color: #87CEEB;
             color: white;
             padding: 10px 0;
             text-align: center;
@@ -161,16 +161,16 @@
             </a>
         </div>
         <ul>
-            <li><a href="{% url 'homepage' %}">Home</a></li>
+            <li><a href="{% url 'homepage' %}">HOME</a></li>
             {% if user.is_authenticated %}
-                <li><a href="{% url 'profile' %}">My Profile</a></li>
-                <li><a href="{% url 'create_recipe' %}">Create Recipe</a></li>
-                <li><a href="{% url 'logout' %}">Logout</a></li>
+                <li><a href="{% url 'profile' %}">MY PROFILE</a></li>
+                <li><a href="{% url 'create_recipe' %}">CREATE RECIPE</a></li>
+                <li><a href="{% url 'logout' %}">LOGOUT</a></li>
             {% else %}
-                <li><a href="{% url 'login' %}">Login</a></li>
-                <li><a href="{% url 'register' %}">Register</a></li>
+                <li><a href="{% url 'login' %}">LOGIN</a></li>
+                <li><a href="{% url 'register' %}">REGISTER</a></li>
             {% endif %}
-            <li><a href="{% url 'all_recipes' %}">All Recipes</a></li>
+            <li><a href="{% url 'all_recipes' %}">ALL RECIPES</a></li>
         </ul>
     </nav>
 

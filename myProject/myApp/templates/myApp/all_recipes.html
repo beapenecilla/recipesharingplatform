@@ -152,16 +152,16 @@
             </a>
         </div>
         <ul>
-            <li><a href="{% url 'homepage' %}">Home</a></li>
+            <li><a href="{% url 'homepage' %}">HOME</a></li>
             {% if user.is_authenticated %}
-                <li><a href="{% url 'profile' %}">My Profile</a></li>
-                <li><a href="{% url 'create_recipe' %}">Create Recipe</a></li>
-                <li><a href="{% url 'logout' %}">Logout</a></li>
+                <li><a href="{% url 'profile' %}">MY PROFILE</a></li>
+                <li><a href="{% url 'create_recipe' %}">CREATE RECIPE</a></li>
+                <li><a href="{% url 'logout' %}">LOGOUT</a></li>
             {% else %}
-                <li><a href="{% url 'login' %}">Login</a></li>
-                <li><a href="{% url 'register' %}">Register</a></li>
+                <li><a href="{% url 'login' %}">LOGIN</a></li>
+                <li><a href="{% url 'register' %}">REGISTER</a></li>
             {% endif %}
-            <li><a href="{% url 'all_recipes' %}">All Recipes</a></li>
+            <li><a href="{% url 'all_recipes' %}">ALL RECIPES</a></li>
         </ul>
     </nav>
 
