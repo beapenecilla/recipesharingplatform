@@ -89,25 +89,21 @@
             max-width: 1200px;
             margin: 120px auto 20px auto;
             padding: 0 20px;
-            margin-top: 10px;
+            margin-top: -100px;
         }
 
         /* My Recipes container */
-        .my-recipes-container {
-            flex: 1;
-            background-color: white;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Saved Recipes container */
+        .my-recipes-container,
         .saved-recipes-container {
             flex: 1;
             background-color: white;
             border-radius: 10px;
             padding: 20px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column; /* Align items vertically */
+            align-items: center; /* Center items horizontally */
+            width: 48%; /* Set width for alignment */
         }
 
         h1 {
@@ -139,13 +135,6 @@
             object-fit: cover;
         }
 
-        .settings-icon {
-            cursor: pointer;
-            margin-top: 10px;
-            font-size: 24px;
-            color: #87CEEB;
-        }
-
         /* Dropdown section */
         .dropdown-container {
             display: none;
@@ -153,40 +142,31 @@
             margin-top: 10px;
         }
 
-        .dropdown-container form {
-            display: flex;
-            flex-direction: column;
-            align-items: center; /* Center items horizontally */
-            margin: 0 auto; /* Center the form within the dropdown */
-            width: 100%; /* Ensure the form takes full width */
-            max-width: 400px; /* Optional: Set a max width for the form */
+        /* Recipe styling */
+        .recipe {
+            text-align: center;
+            margin-bottom: 20px;
+            width: 100%; /* Full width for recipe items */
         }
 
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            align-items: center; /* Center items horizontally */
-            margin-bottom: 15px; /* Add some spacing between items */
-            width: 100%; /* Ensure form group takes full width */
+        img {
+            max-width: 100%; 
+            height: auto; /* Ensure images are responsive */
         }
 
-        input[type="file"] {
-            margin-top: 10px; /* Add spacing above the file input */
-            width: auto; /* Ensure the input doesn't stretch full width */
-        }
-
-        .update-button {
+        .delete-button {
             background-color: #87CEEB;
-            color: white;
+            color: rgb(0, 0, 0);
             border: none;
             border-radius: 5px;
             padding: 10px 15px;
             cursor: pointer;
             transition: background-color 0.3s;
+            margin-top: 10px;
         }
 
-        .update-button:hover {
-            background-color: #b7d3df;
+        .delete-button:hover {
+            background-color: white;
         }
 
         /* Footer */
@@ -262,28 +242,6 @@
         {% endif %}
     </div>
 
-    <!-- Profile Image Section -->
-    <div class="profile-image-container">
-        {% if user.profile_image %}
-            <img src="{{ user.profile_image.url }}" alt="Profile Image" class="profile-image">
-        {% else %}
-            <img src="{% static 'myApp/default_profile.jpg' %}" alt="Default Profile Image" class="profile-image">
-        {% endif %}
-        <div class="settings-icon" onclick="toggleDropdown()">⚙️</div>
-    </div>
-
-    <!-- Dropdown for updating profile -->
-    <div id="dropdownContainer" class="dropdown-container">
-        <form method="POST" action="{% url 'update_profile' %}" enctype="multipart/form-data">
-            {% csrf_token %}
-            <div class="form-group">
-                <label for="profile_image">Choose a new profile image:</label>
-                <input type="file" name="profile_image" id="profile_image" class="form-control-file">
-            </div>
-            <button type="submit" class="update-button">Update Profile</button>
-        </form>
-    </div>
-
     <!-- Main Profile Content -->
     <div class="profile-content">
         <!-- My Recipes Container (Left) -->
@@ -296,8 +254,12 @@
                     <p><strong>Ingredients:</strong> {{ recipe.ingredients }}</p>
                     <p><strong>Steps:</strong> {{ recipe.steps }}</p>
                     {% if recipe.image %}
-                        <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}">
+                        <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}"/>
                     {% endif %}
+                    <form method="POST" action="{% url 'delete_recipe' recipe.id %}" style="display:inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="delete-button">Delete Recipe</button>
+                    </form>
                 </div>
                 {% endfor %}
             {% else %}
@@ -310,17 +272,17 @@
             <h1>Your Saved Recipes</h1>
             {% if saved_recipes %}
                 {% for saved_recipe in saved_recipes %}
-                <div class="saved-recipe">
-                    <h2>{{ saved_recipe.title }}</h2>
-                    <p><strong>Ingredients:</strong> {{ saved_recipe.ingredients }}</p>
-                    <p><strong>Steps:</strong> {{ saved_recipe.steps }}</p>
-                    {% if saved_recipe.image %}
-                        <img src="{{ saved_recipe.image.url }}" alt="{{ saved_recipe.title }}">
-                    {% endif %}
-                </div>
+                    <div class="recipe">
+                        <h2>{{ saved_recipe.recipe.title }}</h2>
+                        <p><strong>Ingredients:</strong> {{ saved_recipe.recipe.ingredients }}</p>
+                        <p><strong>Steps:</strong> {{ saved_recipe.recipe.steps }}</p>
+                        {% if saved_recipe.recipe.image %}
+                            <img src="{{ saved_recipe.recipe.image.url }}" alt="{{ saved_recipe.recipe.title }}"/>
+                        {% endif %}
+                    </div>
                 {% endfor %}
             {% else %}
-                <p>No saved recipes found.</p>
+                <p>You have not saved any recipes yet.</p>
             {% endif %}
         </div>
     </div>
@@ -334,5 +296,6 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
 </body>
 </html>

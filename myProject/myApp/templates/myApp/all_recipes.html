@@ -189,15 +189,18 @@
                     {% if recipe.image %}
                         <img src="{{ recipe.image.url }}" alt="Image of {{ recipe.title }}" class="recipe-image">
                     {% endif %}
-                    <a href="{% url 'recipe_detail' recipe.pk %}">{{ recipe.title }}</a> by {{ recipe.created_by.username }}
+                    <a href="{% url 'recipe_detail' recipe.pk %}">{{ recipe.title }}</a> 
+                    <span style="margin-left: 10px;">by {{ recipe.created_by.username }}</span> <!-- Added margin here -->
                     {% if request.user == recipe.created_by %}
-                        | <a href="{% url 'edit_recipe' recipe.pk %}">Edit</a>
+                    <a href="{% url 'edit_recipe' recipe.pk %}">|  Edit</a>
                     {% endif %}
                 </li>
             {% empty %}
                 <li>No recipes available.</li>
             {% endfor %}
         </ul>
+        
+        
     </div>
 
     <!-- Footer -->

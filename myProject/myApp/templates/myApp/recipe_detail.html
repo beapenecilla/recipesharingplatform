@@ -1,286 +1,321 @@
 <!DOCTYPE html>
- <html lang="en">
- <head>
- <meta charset="UTF-8">
- <meta name="viewport" content="width=device-width,
- initial-scale=1.0">
- <title>{{ recipe.title }}-Pastry Paradise</title>
- <!--Google Fonts-->
- <link
- href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&disp
- lay=swap" rel="stylesheet">
- <style>
- /* General styles */
- body {
- font-family: 'Cinzel', serif;
- margin: 0;
- padding: 0;
- background: white;
- display: flex;
- flex-direction: column;
- min-height: 100vh; /* Adjusted to ensure enough height for
- centering */
- }
- nav {
- background-color: #87ceeb;
- color: white;
- padding: 15px;
- display: flex;
- justify-content: space-between;
- align-items: center;
- box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
- position: fixed;
- width: 100%;
- top: 0;
- z-index: 1000;
- }
- nav ul {
- list-style-type: none;
- margin: 0;
-padding: 0;
- display: flex;
- }
- nav ul li {
- margin-right: 20px;
- }
- nav ul li a {
- color: white;
- text-decoration: none;
- padding: 8px 15px;
- border-radius: 5px;
- transition: background-color 0.3s;
- }
- nav ul li a:hover {
- background-color: #d6efed;
- }
- /* Main layout */
- .main-content {
- display: flex;
- justify-content: center; /* Center containers */
- margin: 100px auto; /* Space below navbar */
- max-width: 1200px;
- padding: 20px;
- gap: 20px;
- }
- /* Left side for recipe details */
- .recipe-container, .right-side {
- flex: 30%; /* Reduced size */
- background-color: #b7d3df; /* Changed color */
- padding: 15px;
- border-radius: 10px;
- box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
- }
- h1, h2 {
- color: white; /* Changed title color to white */
- text-align: center; /* Centered titles */
- }
-p {
- line-height: 1.0;
- }
- img {
- max-width: 100%;
- margin-top: 20px;
- border-radius: 10px;
- }
- /* Comments section */
- .comment-section {
- margin-top: 20px;
- padding: 15px;
- background-color: #f8f9fa;
- border-radius: 10px;
- max-height: 300px;
- overflow-y: auto;
- text-align: center; /* Center text in comments section */
- }
- .comment {
- margin-bottom: 15px;
- padding: 10px;
- background-color: #fff;
- border-radius: 10px;
- box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
- text-align: left; /* Left-align comment text */
- }
- .comment strong {
- color: #87ceeb;
- }
- .comment small {
- font-size: 0.9em;
- color: #888;
- }
- /* Comment form */
- .comment-form textarea {
- width: 90%;
-height: 60px;
- margin-top: 10px;
- padding: 10px;
- border-radius: 5px;
- border: 2px solid #ccc;
- resize: none;
- transition: box-shadow 0.3s;
- }
- .comment-form textarea:focus {
- box-shadow: 0 0 10px rgba(136, 221, 255, 0.5);
- }
- button {
- background-color: #87ceeb; /* Changed color */
- color: white;
- border: none;
- padding: 10px 15px;
- border-radius: 5px;
- cursor: pointer;
- transition: background-color 0.3s, transform 0.2s;
- font-family: 'Cinzel', serif; /* Changed font */
- font-weight: bold;
- }
- button:hover {
- background-color: #d6efed;
- transform: scale(1.05);
- }
- /* Back button styling */
- .back-button-container {
- text-align: center; /* Center the button */
- margin: 20px 0; /* Space above and below the button */
- }
- footer {
- background-color: #87ceeb; /* Changed color */
- color: white;
- padding: 10px 0;
- text-align: center;
- width: 100%;
- position: relative;
-bottom: 0;
- }
- footer p {
- margin: 0;
- }
- /* Responsive design */
- @media (max-width: 768px) {
- .main-content {
- flex-direction: column;
- }
- .recipe-container, .right-side {
- flex: 100%; /* Full width for both sections */
- }
- .back-button-container {
- text-align: center; /* Center button on small screens
- */
- }
- }
- </style>
- </head>
- <body>
- <!--Navbar-->
- <nav>
- <div class="logo">
- <a href="{% url 'homepage' %}" style="color: white;
- text-decoration: none;">
- <h2>Pastry Paradise</h2>
- </a>
- </div>
- <ul>
- <li><a href="{% url 'homepage' %}">Home</a></li>
- {% if user.is_authenticated %}
- <li><a href="{% url 'profile' %}">My Profile</a></li>
- <li><a href="{% url 'create_recipe' %}">Create
- Recipe</a></li>
- <li><a href="{% url 'logout' %}">Logout</a></li>
- {% else %}
- <li><a href="{% url 'login' %}">Login</a></li>
- <li><a href="{% url 'register' %}">Register</a></li>
-{% endif %}
- <li><a href="{% url 'all_recipes' %}">All Recipes</a></li>
- </ul>
- </nav>
- <!--Main Content-->
- <div class="main-content">
- <!--Recipe Container (left)-->
- <div class="recipe-container">
- <h1>{{ recipe.title }}</h1>
- <p><strong>Ingredients:</strong></p>
- <p>{{ recipe.ingredients }}</p>
- <p><strong>Steps:</strong></p>
- <p>{{ recipe.steps }}</p>
- {% if recipe.image %}
- <img src="{{ recipe.image.url }}" alt="{{ recipe.title
- }}">
- {% endif %}
- <hr>
- {% if user.is_authenticated %}
- <form method="POST" action="{% url 'save_recipe'
- recipe.pk %}">
- {% csrf_token %}
- <button type="submit">Save Recipe</button>
- </form>
- {% endif %}
- </div>
- <!--Right Side Container for Comments and Ratings-->
- <div class="right-side">
- <h2>Comments</h2>
- <div class="comment-section">
- <ul>
- {% for comment in comments %}
- <li class="comment">
- <strong>{{ comment.user.username
- }}</strong>: {{ comment.text }} <br>
- <small>{{ comment.created_at }}</small>
- </li>
- {% empty %}
- <li>No comments yet.</li>
- {% endfor %}
- </ul>
-</div>
- {% if user.is_authenticated %}
- <div class="comment-form">
- <form method="POST" action="{% url 'add_comment'
- recipe.pk %}">
- {% csrf_token %}
- <textarea name="comment_text"
- placeholder="Leave a comment..." required></textarea>
- <button type="submit">Submit Comment</button>
- </form>
- </div>
- {% else %}
- <p>You must be logged in to leave a comment.</p>
- {% endif %}
- <h2>Rate this Recipe</h2>
- {% if user.is_authenticated %}
- <div class="rating-section">
- <form method="POST" action="{% url 'add_rating'
- recipe.pk %}">
- {% csrf_token %}
- <div class="star-rating">
- <input type="radio" name="rating" value="5"
- id="5-stars">
- <label for="5-stars">&#9733;</label>
- <input type="radio" name="rating" value="4"
- id="4-stars">
- <label for="4-stars">&#9733;</label>
- <input type="radio" name="rating" value="3"
- id="3-stars">
- <label for="3-stars">&#9733;</label>
- <input type="radio" name="rating" value="2"
- id="2-stars">
- <label for="2-stars">&#9733;</label>
- <input type="radio" name="rating" value="1"
- id="1-star">
- <label for="1-star">&#9733;</label>
- </div>
- <button type="submit">Submit Rating</button>
- </form>
- </div>
- {% else %}
-<p>You must be logged in to rate this recipe.</p>
- {% endif %}
- </div>
- </div>
- <!-- Back Button-->
- <div class="back-button-container">
- <a href="{% url 'all_recipes' %}">
- <button>Back to All Recipes</button>
- </a>
- </div>
- <footer>
- <p>&copy; 2024 Pastry Paradise. All rights reserved.</p>
- </footer>
- </body>
- </html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ recipe.title }} - Pastry Paradise</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        /* General styles */
+        body {
+            font-family: 'Cinzel', serif;
+            margin: 0;
+            padding: 0;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        nav {
+            background-color: #87ceeb;
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+        nav ul li {
+            margin-right: 20px;
+        }
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        nav ul li a:hover {
+            background-color: #d6efed;
+        }
+        /* Main layout */
+        .main-content {
+            display: flex;
+            justify-content: center;
+            margin: 100px auto;
+            max-width: 1200px;
+            padding: 20px;
+            gap: 20px;
+        }
+        /* Left side for recipe details */
+        .recipe-container, .right-side {
+            flex: 30%;
+            background-color: #b7d3df;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+        h1 {
+            color: #333; /* Changed title color for better contrast */
+            text-align: center;
+            font-size: 2.5em; /* Increased title size */
+            margin-bottom: 10px; /* Spacing below the title */
+        }
+        h2 {
+            color: #333; /* Changed heading color for better contrast */
+            text-align: center;
+            font-size: 1.8em; /* Increased size for secondary headings */
+            margin: 20px 0 10px; /* Spacing above and below headings */
+        }
+        p {
+            line-height: 1.5;
+            color: #555; /* Changed paragraph text color */
+            font-size: 1em; /* Set paragraph font size */
+            margin: 10px 0; /* Added spacing for paragraphs */
+        }
+        img {
+            max-width: 100%;
+            margin-top: 20px;
+            border-radius: 10px;
+        }
+        /* Ratings section */
+        .rating-section {
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .star-rating {
+            font-size: 2em;
+            display: inline-block;
+        }
+
+        .star-rating input {
+            display: none;
+        }
+
+        .star-rating label {
+            color: #ffffff;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .star-rating label:hover {
+            transform: scale(1.2);
+        }
+
+        .star-rating input:checked ~ label {
+            color: #1d25fd;
+            transform: scale(1.2);
+        }
+
+        .average-rating {
+            margin-top: 10px;
+            font-size: 1.2em;
+            color: #000000;
+        }
+        /* Comments section */
+        .comment-section {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            max-height: 300px;
+            overflow-y: auto;
+            text-align: left; /* Left align text in comments section */
+        }
+        .comment {
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+        .comment strong {
+            color: #87ceeb;
+        }
+        .comment small {
+            font-size: 0.9em;
+            color: #888;
+        }
+        /* Comment form */
+        .comment-form textarea {
+            width: 90%;
+            height: 60px;
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            border: 2px solid #ccc;
+            resize: none;
+            transition: box-shadow 0.3s;
+            font-size: 1em; /* Set font size for textarea */
+        }
+        .comment-form textarea:focus {
+            box-shadow: 0 0 10px rgba(136, 221, 255, 0.5);
+        }
+        button {
+            background-color: #87ceeb; /* Button color */
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            font-family: 'Cinzel', serif; /* Button font */
+            font-weight: bold;
+            font-size: 1em; /* Set button font size */
+        }
+        button:hover {
+            background-color: #d6efed;
+            transform: scale(1.05);
+        }
+        /* Back button styling */
+        .back-button-container {
+            text-align: center; /* Center the button */
+            margin: 20px 0; /* Space above and below the button */
+        }
+        footer {
+            background-color: #87ceeb; /* Footer color */
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+            width: 100%;
+            position: relative;
+            bottom: 0;
+        }
+        footer p {
+            margin: 0;
+        }
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            .recipe-container, .right-side {
+                flex: 100%; /* Full width for both sections */
+            }
+            .back-button-container {
+                text-align: center; /* Center button on small screens */
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav>
+        <div class="logo">
+            <a href="{% url 'homepage' %}" style="color: white; text-decoration: none;">
+                <h2>Pastry Paradise</h2>
+            </a>
+        </div>
+        <ul>
+            <li><a href="{% url 'homepage' %}">Home</a></li>
+            {% if user.is_authenticated %}
+                <li><a href="{% url 'profile' %}">My Profile</a></li>
+                <li><a href="{% url 'create_recipe' %}">Create Recipe</a></li>
+                <li><a href="{% url 'logout' %}">Logout</a></li>
+            {% else %}
+                <li><a href="{% url 'login' %}">Login</a></li>
+                <li><a href="{% url 'register' %}">Register</a></li>
+            {% endif %}
+            <li><a href="{% url 'all_recipes' %}">All Recipes</a></li>
+        </ul>
+    </nav>
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Recipe Container (left) -->
+        <div class="recipe-container">
+            <h1>{{ recipe.title }}</h1>
+            <p><strong>Ingredients:</strong></p>
+            <p>{{ recipe.ingredients }}</p>
+            <p><strong>Steps:</strong></p>
+            <p>{{ recipe.steps }}</p>
+            {% if recipe.image %}
+                <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}">
+            {% endif %}
+            <hr>
+            {% if user.is_authenticated %}
+                <form method="POST" action="{% url 'save_recipe' recipe.pk %}">
+                    {% csrf_token %}
+                    <button type="submit">Save Recipe</button>
+                </form>
+            {% endif %}
+        </div>
+        <!-- Right Side Container for Comments and Ratings -->
+        <div class="right-side">
+            <h2>Comments</h2>
+            <div class="comment-section">
+                <ul>
+                    {% for comment in comments %}
+                        <li class="comment">
+                            <strong>{{ comment.user.username }}</strong>: {{ comment.text }} <br>
+                            <small>{{ comment.created_at }}</small>
+                        </li>
+                    {% empty %}
+                        <li>No comments yet.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% if user.is_authenticated %}
+                <div class="comment-form">
+                    <form method="POST" action="{% url 'add_comment' recipe.pk %}">
+                        {% csrf_token %}
+                        <textarea name="comment_text" placeholder="Leave a comment..." required></textarea>
+                        <button type="submit">Submit Comment</button>
+                    </form>
+                </div>
+            {% else %}
+                <p>You must be logged in to leave a comment.</p>
+            {% endif %}
+            <h2>Rate this Recipe</h2>
+            {% if user.is_authenticated %}
+                <div class="rating-section">
+                    <form method="POST" action="{% url 'add_rating' recipe.pk %}">
+                        {% csrf_token %}
+                        <div class="star-rating">
+                            <input type="radio" name="rating" value="5" id="5-stars" required>
+                            <label for="5-stars">&#9733;</label>
+                            <input type="radio" name="rating" value="4" id="4-stars">
+                            <label for="4-stars">&#9733;</label>
+                            <input type="radio" name="rating" value="3" id="3-stars">
+                            <label for="3-stars">&#9733;</label>
+                            <input type="radio" name="rating" value="2" id="2-stars">
+                            <label for="2-stars">&#9733;</label>
+                            <input type="radio" name="rating" value="1" id="1-star">
+                            <label for="1-star">&#9733;</label>
+                        </div>
+                        <button type="submit">Submit Rating</button>
+                    </form>
+                    {% if average_rating %}
+                        <p class="average-rating">Average Rating: {{ average_rating|floatformat:1 }} / 5</p>
+                    {% else %}
+                        <p class="average-rating">No ratings yet.</p>
+                    {% endif %}
+                </div>
+            {% else %}
+                <p>You must be logged in to rate this recipe.</p>
+            {% endif %}
+            
+        </div>
+    </div>
+    <!-- Back Button -->
+    <div class="back-button-container">
+        <a href="{% url 'all_recipes' %}">
+            <button>Back to All Recipes</button>
+        </a>
+    </div>
+    <footer>
+        <p>&copy; 2024 Pastry Paradise. All rights reserved.</p>
+    </footer>
+</body>
+</html>

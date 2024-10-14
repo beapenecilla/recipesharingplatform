@@ -1,190 +1,204 @@
 <!DOCTYPE html>
- <html lang="en">
- <head>
- <meta charset="UTF-8">
- <meta name="viewport" content="width=device-width,
- initial-scale=1.0">
- <title>Register-Pastry Paradise</title>
- <!--Google Fonts-->
- <link
- href="https://fonts.googleapis.com/css2?family=Cinzel:wght@300;500;700&
- display=swap" rel="stylesheet">
- <!--Bootstrap CSS-->
- <link rel="stylesheet"
- href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min
- .css">
- <style>
- body {
- font-family: 'Cinzel', serif; /* Changed font to Cinzel */
- margin: 0;
- padding: 0;
- background-color: #f8f9fa;
- display: flex;
- justify-content: center;
- align-items: center;
- min-height: 100vh;
- flex-direction: column;
- }
- /* Navbar styling */
- nav {
- background-color: #87CEEB; /* Navbar color */
- color: white;
- padding: 10px;
- display: flex;
- justify-content: space-between;
- align-items: center;
- width: 100%;
- position: fixed;
- top: 0;
- left: 0;
-z-index: 1000;
- }
- nav .logo h2 {
- font-family: 'Cinzel', serif; /* Change font style for the
- logo */
- }
- nav ul {
- list-style-type: none;
- margin: 0;
- padding: 0;
- display: flex;
- }
- nav ul li {
- margin-right: 20px;
- }
- nav ul li a {
- color: white;
- text-decoration: none;
- padding: 8px 15px;
- border-radius: 5px;
- transition: background-color 0.3s;
- }
- nav ul li a:hover {
- background-color: #d6efed; /* Changed hover color */
- }
- .login-container {
- background-color: #b7d3df; /* Updated login container color
- */
- border-radius: 10px;
- padding: 40px;
- box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
- width: 100%;
- max-width: 800px; /* Extended width of the container */
- margin-top: 10px;
- }
- .login-container h1 {
-color: white; /* Change title color to white */
- font-size: 2rem;
- font-weight: 700;
- margin-bottom: 30px;
- text-align: center;
- }
- .login-container form {
- display: flex;
- flex-direction: column;
- }
- .login-container form input[type="text"],
- .login-container form input[type="password"] {
- padding: 10px;
- margin-bottom: 20px;
- border: 1px solid #ccc;
- border-radius: 5px;
- font-size: 1rem;
- background-color: #f8f9fa;
- width: calc(100%-20px); /* Ensure no extra space on the
- sides */
- }
- .login-container form button {
- background-color: #87CEEB; /* Change button color to
- #87CEEB */
- color: white;
- padding: 10px;
- border: none;
- border-radius: 5px;
- font-size: 1.1rem;
- transition: background-color 0.3s;
- cursor: pointer;
- }
- .login-container form button:hover {
- background-color: #6cb4e4; /* Optional hover color */
- }
- .login-container a {
- text-align: center;
- color: white; /* Change link color to white */
-font-size: 0.9rem;
- display: block;
- margin-top: 15px;
- }
- /* Footer */
- footer {
- background-color: #87CEEB; /* Footer color */
- color: white;
- padding: 10px 0;
- text-align: center;
- width: 100%;
- position: fixed;
- bottom: 0;
- }
- footer p {
- margin: 0;
- }
- /* Ensure no overlap */
- .container-wrapper {
- display: flex;
- flex-direction: column;
- align-items: center;
- justify-content: center;
- flex-grow: 1;
- margin-top: 50px; /* Give space for navbar */
- }
- </style>
- </head>
- <body>
- <!--Navbar-->
- <nav>
- <div class="logo">
- <a href="{% url 'homepage' %}" style="color: white;
- text-decoration: none;">
- <h2>Pastry Paradise</h2>
- </a>
- </div>
- <ul>
- <li><a href="{% url 'homepage' %}">Home</a></li>
-{% if user.is_authenticated %}
- <li><a href="{% url 'logout' %}">Logout</a></li>
- {% else %}
- <li><a href="{% url 'login' %}">Login</a></li>
- <li><a href="{% url 'register' %}">Register</a></li>
- {% endif %}
- </ul>
- </nav>
- <!--Main Container-->
- <div class="container-wrapper">
- <!--Register Form-->
- <div class="login-container">
- <h1>Register</h1>
- <form method="POST">
- {% csrf_token %}
- {{ form.as_p|safe }} <!--Make sure to handle form
- rendering-->
- <button type="submit">Register</button>
- </form>
- <a href="{% url 'login' %}">Already have an account? Login
- here</a>
- </div>
- </div>
- <!--Footer-->
- <footer>
- <p>&copy; 2024 Pastry Paradise. All Rights Reserved.</p>
- </footer>
- <!--Bootstrap JS and dependencies-->
- <script
- src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
- <script
- src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.
- min.js"></script>
- <script
- src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.mi
- n.js"></script>
- </body>
- </html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Pastry Paradise</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@300;500;700&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <style>
+        body {
+            font-family: Playfair Display;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Navbar styling */
+        nav {
+            background-color: #87CEEB;
+            color: white;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        nav ul li {
+            margin-right: 20px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            font-family: 'Cinzel', serif;
+        }
+
+        nav ul li a:hover {
+            background-color: #d6efed;
+        }
+
+        /* Register container styling */
+        .register-container {
+            background-color: #b7d3df;
+            border-radius: 10px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .register-container h1 {
+            color: white;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .register-container form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .register-container form input[type="text"],
+        .register-container form input[type="password"] {
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+            background-color: #f8f9fa;
+            width: calc(100% - 20px);
+            text-transform: none; /* Prevent all caps */
+        }
+
+        .register-container form button {
+            background-color: #87CEEB;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            transition: background-color 0.3s;
+            cursor: pointer;
+        }
+
+        .register-container form button:hover {
+            background-color: #6cb4e4;
+        }
+
+        .register-container a {
+            text-align: center;
+            color: white;
+            font-size: 0.9rem;
+            display: block;
+            margin-top: 15px;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #87CEEB;
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+            width: 100%;
+            position: fixed;
+            bottom: 0;
+        }
+
+        footer p {
+            margin: 0;
+        }
+
+        /* Ensure no overlap and center the container */
+        .container-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav>
+        <div class="logo">
+            <a href="{% url 'homepage' %}" style="color: white; text-decoration: none;">
+                <h2>Pastry Paradise</h2>
+            </a>
+        </div>
+        <ul>
+            <li><a href="{% url 'homepage' %}">Home</a></li>
+            {% if user.is_authenticated %}
+            <li><a href="{% url 'profile' %}">My Profile</a></li>
+            <li><a href="{% url 'create_recipe' %}">Create Recipe</a></li>
+            <li><a href="{% url 'logout' %}">Logout</a></li>
+            {% else %}
+            <li><a href="{% url 'login' %}">Login</a></li>
+            <li><a href="{% url 'register' %}">Register</a></li>
+            {% endif %}
+            <li><a href="{% url 'all_recipes' %}">All Recipes</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container-wrapper">
+        <!-- Register Form -->
+        <div class="register-container">
+            <h1>Register</h1>
+            <form method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <input type="text" name="username" placeholder="Username" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" name="password1" placeholder="Password" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" name="password2" placeholder="Re-enter Password" required>
+                </div>
+                <button type="submit">Register</button>
+            </form>
+            <a href="{% url 'login' %}">Already have an account? Login here</a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Pastry Paradise. All Rights Reserved.</p>
+    </footer>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

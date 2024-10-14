@@ -10,7 +10,6 @@ from django.db import models
 from django.db.models import Q
 #new for editable profile
 from django.shortcuts import render, redirect
-from .models import UserProfile
 
 # Homepage View
 def homepage(request):
@@ -110,7 +109,34 @@ def add_comment(request, pk):
 def add_rating(request, pk):
     recipe = get_object_or_404(Recipe, pk=pk)
 
-#new
+    # Check if the user is the creator of the recipe
+    if recipe.created_by == request.user:
+        return redirect('recipe_detail', pk=recipe.pk)  # Redirect back if the user is the creator
+
+    if request.method == 'POST':
+        score = request.POST.get('rating')
+
+        try:
+            score = int(score)  # Convert score to integer
+        except (ValueError, TypeError):
+            return HttpResponseBadRequest("Invalid rating value. Please enter a number.")
+
+        # Check for valid score range (e.g., 1-5)
+        if score < 1 or score > 5:
+            return HttpResponseBadRequest("Rating must be between 1 and 5.")
+
+        # Check if the user has already rated this recipe
+        if Rating.objects.filter(recipe=recipe, user=request.user).exists():
+            return HttpResponseBadRequest("You have already rated this recipe.")
+
+        # Save the rating
+        rating = Rating(recipe=recipe, user=request.user, score=score)
+        rating.save()
+
+        return redirect('recipe_detail', pk=recipe.pk)
+
+    return redirect('recipe_detail', pk=recipe.pk)  # Redirect on GET request
+
 def all_recipes(request):
     search_query = request.GET.get('search', '')
     recipes = Recipe.objects.all()
@@ -145,30 +171,11 @@ def recipe_detail(request, pk):
         'ratings': ratings,
     })
 
+
 @login_required
 def save_recipe(request, pk):
     recipe = get_object_or_404(Recipe, pk=pk)
     saved_recipe, created = SavedRecipe.objects.get_or_create(user=request.user, recipe=recipe)
     return redirect('recipe_detail', pk=recipe.pk)
 
-#new editable profile
-@login_required
-def update_profile(request):
-    if request.method == 'POST':
-        user = request.user
-        ##username = request.POST.get('username')
-        profile_image = request.FILES.get('profile_image')
 
-        # Update username
-        #user.username = username
-        #user.save()
-
-        # Update profile image if provided
-        if profile_image:
-            profile = UserProfile.objects.get(user=user)
-            profile.image = profile_image
-            profile.save()
-
-        return redirect('profile')  # Redirect to the profile page after saving
-
-    return render(request, 'profile.html')  # Adjust the template path accordingly
