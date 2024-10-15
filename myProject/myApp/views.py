@@ -1,15 +1,15 @@
-# views.py
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login as auth_login, authenticate, logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from .forms import RecipeForm
 from .models import Recipe, Comment, Rating, SavedRecipe
-from django.db import models 
-#new for all recipes
 from django.db.models import Q
-#new for editable profile
-from django.shortcuts import render, redirect
+from . import models
+from django.db.models import Avg
+from django.http import HttpResponseBadRequest
+
+
 
 # Homepage View
 def homepage(request):
@@ -22,7 +22,7 @@ def register(request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            auth_login(request, user)  # Automatically log the user in
+            auth_login(request, user)
             return redirect('homepage')
     else:
         form = UserCreationForm()
@@ -48,52 +48,55 @@ def logout(request):
     auth_logout(request)
     return redirect('homepage')
 
-
 @login_required
-
 def create_recipe(request):
     if request.method == 'POST':
-        form = RecipeForm(request.POST, request.FILES)  # Adjust according to your form
+        form = RecipeForm(request.POST, request.FILES)
         if form.is_valid():
             recipe = form.save(commit=False)
-            recipe.created_by = request.user  # Set created_by to the logged-in user
+            recipe.created_by = request.user
             recipe.save()
-            return redirect('profile')  # Redirect to the profile page after creation
+            return redirect('profile')
     else:
         form = RecipeForm()
     return render(request, 'myApp/create_recipe.html', {'form': form})
 
-
 def profile_view(request):
     if request.user.is_authenticated:
         recipes = Recipe.objects.filter(created_by=request.user)
-        saved_recipes = request.user.saved_recipes.all()  # Get saved recipes
+        saved_recipes = request.user.saved_recipes.all()
     else:
         recipes = []
         saved_recipes = []
     return render(request, 'myApp/profile.html', {'recipes': recipes, 'saved_recipes': saved_recipes})
 
 def delete_recipe(request, pk):
-    recipe = get_object_or_404(Recipe, pk=pk, created_by=request.user)  # Ensure the user is the creator
+    recipe = get_object_or_404(Recipe, pk=pk, created_by=request.user)
     recipe.delete()
     return redirect('profile')
 
 # View for all recipes
 def all_recipes(request):
-    recipes = Recipe.objects.all()  # Retrieve all recipes
-    return render(request, 'myApp/all_recipes.html', {'recipes': recipes})
+    search_query = request.GET.get('search', '')
+    recipes = Recipe.objects.all()
+
+    if search_query:
+        recipes = recipes.filter(Q(title__icontains=search_query) | Q(created_by__username__icontains=search_query))
+
+    return render(request, 'myApp/all_recipes.html', {'recipes': recipes, 'search_query': search_query})
 
 @login_required
 def edit_recipe(request, pk):
-    recipe = get_object_or_404(Recipe, pk=pk, created_by=request.user)  # Ensure only creator can edit
+    recipe = get_object_or_404(Recipe, pk=pk, created_by=request.user)
     if request.method == 'POST':
         form = RecipeForm(request.POST, request.FILES, instance=recipe)
         if form.is_valid():
             form.save()
-            return redirect('recipe_detail', pk=pk)  # Redirect to detail page after editing
+            return redirect('recipe_detail', pk=pk)
     else:
         form = RecipeForm(instance=recipe)
     return render(request, 'myApp/edit_recipe.html', {'form': form, 'recipe': recipe})
+
 @login_required
 def add_comment(request, pk):
     recipe = get_object_or_404(Recipe, pk=pk)
@@ -109,61 +112,37 @@ def add_comment(request, pk):
 def add_rating(request, pk):
     recipe = get_object_or_404(Recipe, pk=pk)
 
-    # Check if the user is the creator of the recipe
     if recipe.created_by == request.user:
-        return redirect('recipe_detail', pk=recipe.pk)  # Redirect back if the user is the creator
+        return redirect('recipe_detail', pk=recipe.pk)
 
     if request.method == 'POST':
         score = request.POST.get('rating')
-
         try:
-            score = int(score)  # Convert score to integer
+            score = int(score)
         except (ValueError, TypeError):
             return HttpResponseBadRequest("Invalid rating value. Please enter a number.")
 
-        # Check for valid score range (e.g., 1-5)
         if score < 1 or score > 5:
             return HttpResponseBadRequest("Rating must be between 1 and 5.")
 
-        # Check if the user has already rated this recipe
         if Rating.objects.filter(recipe=recipe, user=request.user).exists():
-            return HttpResponseBadRequest("You have already rated this recipe.")
+            return redirect('recipe_detail', pk=recipe.pk)
 
-        # Save the rating
         rating = Rating(recipe=recipe, user=request.user, score=score)
         rating.save()
 
         return redirect('recipe_detail', pk=recipe.pk)
 
-    return redirect('recipe_detail', pk=recipe.pk)  # Redirect on GET request
-
-def all_recipes(request):
-    search_query = request.GET.get('search', '')
-    recipes = Recipe.objects.all()
-
-    if search_query:
-        recipes = recipes.filter(Q(title__icontains=search_query) | Q(created_by__username__icontains=search_query))
-
-    return render(request, 'myApp/all_recipes.html', {'recipes': recipes, 'search_query': search_query})
-    
-    # Check if the user is the creator of the recipe
-    if recipe.created_by == request.user:
-        return redirect('recipe_detail', pk=recipe.pk)  # Redirect back if user is the creator
-
-    if request.method == 'POST':
-        score = request.POST.get('rating')
-        rating = Rating(recipe=recipe, user=request.user, score=score)
-        rating.save()
-        return redirect('recipe_detail', pk=recipe.pk)
-    
     return redirect('recipe_detail', pk=recipe.pk)
-
 
 def recipe_detail(request, pk):
     recipe = get_object_or_404(Recipe, pk=pk)
     comments = recipe.comments.all()
     ratings = recipe.ratings.all()
-    average_rating = ratings.aggregate(models.Avg('score'))['score__avg'] if ratings.exists() else None
+
+    # Calculating average rating
+    average_rating = ratings.aggregate(Avg('score'))['score__avg'] if ratings.exists() else None
+    
     return render(request, 'myApp/recipe_detail.html', {
         'recipe': recipe,
         'comments': comments,
@@ -177,5 +156,3 @@ def save_recipe(request, pk):
     recipe = get_object_or_404(Recipe, pk=pk)
     saved_recipe, created = SavedRecipe.objects.get_or_create(user=request.user, recipe=recipe)
     return redirect('recipe_detail', pk=recipe.pk)
-
-

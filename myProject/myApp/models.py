@@ -8,7 +8,7 @@ class Recipe(models.Model):
     steps = models.TextField()
     image = models.ImageField(upload_to='recipes/', null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    created_by = models.ForeignKey(User, on_delete=models.CASCADE)  # Link to the User model
+    created_by = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.title
@@ -44,4 +44,3 @@ class SavedRecipe(models.Model):
 
     def __str__(self):
         return f'Saved Recipe: {self.recipe.title} by {self.user.username}'
-

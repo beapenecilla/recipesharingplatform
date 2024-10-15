@@ -179,11 +179,32 @@
             background-color: #d6efed;
             transform: scale(1.05);
         }
-        /* Back button styling */
-        .back-button-container {
-            text-align: center; /* Center the button */
-            margin: 20px 0; /* Space above and below the button */
-        }
+     /* Back button styling */
+.back-button-container {
+    position: fixed; /* Keeps the button fixed on the screen */
+    top: 120px; /* Adjust this value to place it right below the navbar */
+    left: 20px; /* Aligns the button to the left corner */
+    z-index: 999; /* Ensures the button is on top of other elements */
+}
+
+.back-button-container button {
+    background-color: #87ceeb; /* Button color */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    font-family: 'Cinzel', serif; /* Button font */
+    font-weight: bold;
+    font-size: 1em; /* Set button font size */
+}
+
+.back-button-container button:hover {
+    background-color: #d6efed;
+    transform: scale(1.05);
+}
+
         footer {
             background-color: #87ceeb; /* Footer color */
             color: white;
@@ -278,40 +299,40 @@
                 <p>You must be logged in to leave a comment.</p>
             {% endif %}
             <h2>Rate this Recipe</h2>
-            {% if user.is_authenticated %}
-                <div class="rating-section">
-                    <form method="POST" action="{% url 'add_rating' recipe.pk %}">
-                        {% csrf_token %}
-                        <div class="star-rating">
-                            <input type="radio" name="rating" value="5" id="5-stars" required>
-                            <label for="5-stars">&#9733;</label>
-                            <input type="radio" name="rating" value="4" id="4-stars">
-                            <label for="4-stars">&#9733;</label>
-                            <input type="radio" name="rating" value="3" id="3-stars">
-                            <label for="3-stars">&#9733;</label>
-                            <input type="radio" name="rating" value="2" id="2-stars">
-                            <label for="2-stars">&#9733;</label>
-                            <input type="radio" name="rating" value="1" id="1-star">
-                            <label for="1-star">&#9733;</label>
-                        </div>
-                        <button type="submit">Submit Rating</button>
-                    </form>
-                    {% if average_rating %}
-                        <p class="average-rating">Average Rating: {{ average_rating|floatformat:1 }} / 5</p>
-                    {% else %}
-                        <p class="average-rating">No ratings yet.</p>
-                    {% endif %}
-                </div>
+{% if user.is_authenticated %}
+    <div class="rating-section">
+        <form method="POST" action="{% url 'add_rating' recipe.pk %}">
+            {% csrf_token %}
+            <div class="star-rating">
+                <input type="radio" name="rating" value="5" id="5-stars" required>
+                <label for="5-stars">&#9733;</label>
+                <input type="radio" name="rating" value="4" id="4-stars">
+                <label for="4-stars">&#9733;</label>
+                <input type="radio" name="rating" value="3" id="3-stars">
+                <label for="3-stars">&#9733;</label>
+                <input type="radio" name="rating" value="2" id="2-stars">
+                <label for="2-stars">&#9733;</label>
+                <input type="radio" name="rating" value="1" id="1-star">
+                <label for="1-star">&#9733;</label>
+            </div>
+            <button type="submit">Submit Rating</button>
+            {% if average_rating %}
+                <p class="average-rating">Average Rating: {{ average_rating|floatformat:1 }} / 5</p>
             {% else %}
-                <p>You must be logged in to rate this recipe.</p>
+                <p class="average-rating">No ratings yet.</p>
             {% endif %}
-            
+        </form>
+    </div>
+{% else %}
+    <p>You must be logged in to rate this recipe.</p>
+{% endif %}
+
         </div>
     </div>
     <!-- Back Button -->
     <div class="back-button-container">
         <a href="{% url 'all_recipes' %}">
-            <button>Back to All Recipes</button>
+            <button>Back to Home</button>
         </a>
     </div>
     <footer>
