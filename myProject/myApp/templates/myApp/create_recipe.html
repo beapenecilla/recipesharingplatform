@@ -6,12 +6,12 @@
     <title>Create Recipe - Pastry Paradise</title>
 
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@300;500;700&display=swap" rel="stylesheet"> <!-- Adjusted to Cinzel -->
 
     <style>
         /* General styles */
         body {
-            font-family: 'Cinzel', serif;
+            font-family: 'Cinzel', serif; /* Adjusted to Cinzel */
             margin: 0;
             padding: 0;
             background: white; /* Gradient background */
@@ -30,7 +30,7 @@
         nav {
             background-color: #87CEEB;
             color: white;
-            padding: 15px;
+            padding: 10px; /* Adjusted padding */
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -39,6 +39,14 @@
             width: 100%; /* Full width */
             top: 0; /* Top of the page */
             z-index: 1000; /* Ensure it stays on top */
+        }
+
+        /* Logo styling for Pastry Paradise */
+        .logo h2 {
+            font-family: 'Cinzel', serif; /* Adjusted to Cinzel */
+            font-size: 30px; /* Adjusted to 30px to match the second HTML */
+            color: white;
+            margin: 0; /* Ensure no extra margin */
         }
 
         nav ul {
@@ -75,9 +83,9 @@
             color: white;
             text-decoration: none;
             border-radius: 5px;
-            font-weight: bold;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             transition: background-color 0.3s ease;
+            margin-top: 10px;
         }
 
         .back-button:hover {
@@ -89,7 +97,7 @@
             max-width: 600px;
             margin: 100px auto; /* Margin top to avoid overlap with fixed navbar */
             padding: 20px;
-            background-color: #d6efed; /* Background for container */
+            background-color: #87ceeb; /* Background for container */
             border-radius: 10px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Shadow for container */
             animation: slideIn 0.5s forwards; /* Animation for container */
@@ -143,7 +151,7 @@
         }
 
         button:hover {
-            background-color: #87CEEB; /* Darker background on hover */
+            background-color: #4ba5ff; /* Darker background on hover */
         }
 
         /* Responsive styling */
@@ -166,10 +174,6 @@
         footer p {
             margin: 0;
         }
-        .logo h2 {
-            font-size: 30px;
-            color: white;
-        }
     </style>
 </head>
 <body>
@@ -177,7 +181,7 @@
     <nav>
         <div class="logo">
             <a href="{% url 'homepage' %}" style="color: white; text-decoration: none;">
-                <h2>Pastry Paradise</h2>
+                <h2>Pastry Paradise</h2> <!-- Adjusted font style and size -->
             </a>
         </div>
         <ul>
@@ -195,7 +199,7 @@
     </nav>
 
     <!-- Back button -->
-    <a href="{% url 'homepage' %}" class="back-button"> Back to Home</a>
+    <a href="{% url 'homepage' %}" class="back-button"> BACK TO HOME</a>
 
     <!-- Main Content -->
     <div class="container">

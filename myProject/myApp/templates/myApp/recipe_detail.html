@@ -17,25 +17,33 @@
             flex-direction: column;
             min-height: 100vh;
         }
-        nav {
-            background-color: #87ceeb;
-            color: white;
-            padding: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            position: fixed;
-            width: 100%;
-            top: 0;
-            z-index: 1000;
-        }
-        nav ul {
-            list-style-type: none;
-            margin: 0;
-            padding: 0;
-            display: flex;
-        }
+
+        
+      /* Navbar styling */
+    nav {
+    background-color: #87ceeb;
+    color: white;
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+}
+
+.logo h2 {
+    color: white; /* Change the logo text color to white */
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
         nav ul li {
             margin-right: 20px;
         }
@@ -61,7 +69,7 @@
         /* Left side for recipe details */
         .recipe-container, .right-side {
             flex: 30%;
-            background-color: #b7d3df;
+            background-color: #87ceeb;
             padding: 15px;
             border-radius: 10px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
@@ -115,7 +123,7 @@
         }
 
         .star-rating input:checked ~ label {
-            color: #1d25fd;
+            color: #f6ee14dc;
             transform: scale(1.2);
         }
 
@@ -217,6 +225,7 @@
         footer p {
             margin: 0;
         }
+    
         /* Responsive design */
         @media (max-width: 768px) {
             .main-content {
@@ -232,6 +241,7 @@
     </style>
 </head>
 <body>
+    
     <!-- Navbar -->
     <nav>
         <div class="logo">
@@ -268,7 +278,7 @@
             {% if user.is_authenticated %}
                 <form method="POST" action="{% url 'save_recipe' recipe.pk %}">
                     {% csrf_token %}
-                    <button type="submit">Save Recipe</button>
+                    <button type="submit" style="background-color: white; color: #000000;">Save Recipe</button>
                 </form>
             {% endif %}
         </div>

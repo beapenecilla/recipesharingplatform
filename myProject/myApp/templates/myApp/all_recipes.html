@@ -1,5 +1,3 @@
-{% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,7 +6,7 @@
     <title>{% block title %}Pastry Paradise - Recipe Sharing Platform{% endblock %}</title>
 
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@300;500;700&display=swap" rel="stylesheet">
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -16,7 +14,7 @@
     <!-- Custom Styles -->
     <style>
         body {
-            font-family: 'Cinzel', serif;
+            font-family: 'Cinzel', serif; /* Consistent with the theme */
             margin: 0;
             padding: 0;
             background-color: #f8f9fa;
@@ -27,17 +25,24 @@
 
         /* Navbar styling */
         nav {
-            background-color: #87ceeb;
+            background-color: #87CEEB;
             color: white;
-            padding: 10px;
+            padding: 10px; /* Adjusted padding */
             display: flex;
             justify-content: space-between;
             align-items: center;
-            width: 100%;
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 1000;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow for navbar */
+            position: fixed; /* Fixed navbar */
+            width: 100%; /* Full width */
+            top: 0; /* Top of the page */
+            z-index: 1000; /* Ensure it stays on top */
+        }
+
+        .logo h2 {
+            font-family: 'Cinzel', serif; /* Adjusted to Cinzel */
+            font-size: 30px; /* Consistent logo size */
+            color: white;
+            margin: 0;
         }
 
         nav ul {
@@ -53,25 +58,31 @@
 
         nav ul li a {
             text-decoration: none;
-            padding: 8px 15px; /* Adjust padding as needed */
+            padding: 8px 15px; /* Adjusted padding to fit the first HTML style */
             border-radius: 5px;
-            color: white; /* Make the text white */
+            color: white; /* White text */
             transition: background-color 0.3s;
         }
 
         nav ul li a:hover {
-            background-color: #d6efed; /* Add a hover effect */
+            background-color: #d6efed; /* Hover effect */
         }
 
-        /* Custom Back Button Color */
-        .btn-pink {
-            background-color: #87ceeb; /* Set to your desired pink color */
-            color: white;
-            margin-top: 150px;
+        /* Back button */
+        .back-button {
+            position: fixed;
+            top: 90px; /* Positioned below the navbar */
+            left: 20px;
+            padding: 1px;
+            background-color: #87ceeb;
+            color: rgb(255, 255, 255);
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s ease;
         }
 
-        .btn-pink:hover {
-            background-color: #d6efed; /* A lighter shade for hover effect */
+        .back-button:hover {
+            background-color: #d6efed;
         }
 
         /* Container styling */
@@ -82,12 +93,12 @@
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             width: 100%;
             max-width: 800px;
-            margin: 20px auto; /* Adjusted margin */
+            margin: 150px auto 20px; /* Adjusted margin to avoid overlap */
         }
 
         .container h1 {
             color: #87ceeb;
-            font-size: 2rem;
+            font-size: 30px; /* Matching previous design */
             font-weight: 700;
             margin-bottom: 30px;
             text-align: center;
@@ -105,25 +116,25 @@
             border-radius: 10px;
             background-color: #f8f9fa;
             display: flex; /* Flexbox for aligning items */
-            align-items: center; /* Center items vertically */
+            align-items: center;
         }
 
         a {
             color: #87ceeb;
             font-weight: 500;
             text-decoration: none;
-            margin-left: 10px; /* Space between image and text */
+            margin-left: 10px; /* Spacing */
         }
 
         a:hover {
             text-decoration: underline;
         }
 
-        /* Image styling */
+        /* Recipe image */
         .recipe-image {
-            max-width: 100px; /* Set max width for images */
-            height: auto; /* Maintain aspect ratio */
-            margin-right: 20px; /* Space between image and text */
+            max-width: 100px;
+            height: auto;
+            margin-right: 20px;
         }
 
         /* Footer */
@@ -140,6 +151,7 @@
         footer p {
             margin: 0;
         }
+
     </style>
 </head>
 <body>
@@ -152,28 +164,29 @@
             </a>
         </div>
         <ul>
-            <li><a href="{% url 'homepage' %}">HOME</a></li>
+            <li><a href="{% url 'homepage' %}">Home</a></li>
             {% if user.is_authenticated %}
-                <li><a href="{% url 'profile' %}">MY PROFILE</a></li>
-                <li><a href="{% url 'create_recipe' %}">CREATE RECIPE</a></li>
-                <li><a href="{% url 'logout' %}">LOGOUT</a></li>
+                <li><a href="{% url 'profile' %}">My Profile</a></li>
+                <li><a href="{% url 'create_recipe' %}">Create Recipe</a></li>
+                <li><a href="{% url 'logout' %}">Logout</a></li>
             {% else %}
-                <li><a href="{% url 'login' %}">LOGIN</a></li>
-                <li><a href="{% url 'register' %}">REGISTER</a></li>
+                <li><a href="{% url 'login' %}">Login</a></li>
+                <li><a href="{% url 'register' %}">Register</a></li>
             {% endif %}
-            <li><a href="{% url 'all_recipes' %}">ALL RECIPES</a></li>
+            <li><a href="{% url 'all_recipes' %}">All Recipes</a></li>
         </ul>
     </nav>
 
+    <!-- Back button -->
     <div class="back-button">
-        <a href="{% url 'homepage' %}" class="btn btn-pink active">Back to Home</a>
+        <a href="{% url 'homepage' %}" class="btn btn-pink active" style="color: white;">BACK TO HOME</a>
     </div>
 
-    <!-- Main Content -->
+    <!-- Main content -->
     <div class="container">
         <h1>All Recipes</h1>
 
-        <!-- Search Form -->
+        <!-- Search form -->
         <form method="GET" action="{% url 'all_recipes' %}" class="mb-4">
             <div class="input-group">
                 <input type="text" name="search" class="form-control" placeholder="Search recipes..." value="{{ search_query }}">
@@ -189,17 +202,16 @@
                     {% if recipe.image %}
                         <img src="{{ recipe.image.url }}" alt="Image of {{ recipe.title }}" class="recipe-image">
                     {% endif %}
-                    <a href="{% url 'recipe_detail' recipe.pk %}">{{ recipe.title }}</a> 
-                    <span style="margin-left: 10px;">by {{ recipe.created_by.username }}</span> <!-- Added margin here -->
+                    <a href="{% url 'recipe_detail' recipe.pk %}">{{ recipe.title }}</a>
+                    <span style="margin-left: 10px;">by {{ recipe.created_by.username }}</span>
                     {% if request.user == recipe.created_by %}
-                    <a href="{% url 'edit_recipe' recipe.pk %}">|  Edit</a>
+                        <a href="{% url 'edit_recipe' recipe.pk %}">| Edit</a>
                     {% endif %}
                 </li>
             {% empty %}
                 <li>No recipes available.</li>
             {% endfor %}
         </ul>
-        
         
     </div>
 

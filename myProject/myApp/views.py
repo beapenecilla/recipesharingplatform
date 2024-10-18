@@ -150,9 +150,17 @@ def recipe_detail(request, pk):
         'ratings': ratings,
     })
 
-
 @login_required
 def save_recipe(request, pk):
     recipe = get_object_or_404(Recipe, pk=pk)
     saved_recipe, created = SavedRecipe.objects.get_or_create(user=request.user, recipe=recipe)
-    return redirect('recipe_detail', pk=recipe.pk)
+    
+    # Redirect to the user's profile page after saving the recipe
+    return redirect('profile') 
+
+@login_required
+def unsave_recipe(request, pk):
+    saved_recipe = get_object_or_404(SavedRecipe, pk=pk, user=request.user)
+    saved_recipe.delete()
+    return redirect('profile')
+

@@ -22,7 +22,7 @@
             background-color: #f8f9fa;
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
+            min-height: 100vh; /* Ensure the body takes the full height */
         }
 
         /* Navbar styling */
@@ -34,7 +34,7 @@
             justify-content: space-between;
             align-items: center;
             width: 100%;
-            position: fixed;
+            position: fixed; /* Fix navbar to top */
             top: 0;
             left: 0;
             z-index: 1000;
@@ -74,7 +74,7 @@
             cursor: pointer;
             transition: background-color 0.3s;
             position: relative;
-            top: 60px;
+            top: 60px; /* Adjust to position below navbar */
         }
 
         .back-button:hover {
@@ -87,8 +87,9 @@
             gap: 20px;
             width: 100%;
             max-width: 1200px;
-            margin: 120px auto 20px auto;
+            margin: 120px auto 20px auto; /* Adjust margin to accommodate fixed navbar */
             padding: 0 20px;
+            flex: 1; /* Allow the profile content to grow and fill the available space */
             margin-top: -100px;
         }
 
@@ -163,6 +164,8 @@
             cursor: pointer;
             transition: background-color 0.3s;
             margin-top: 10px;
+            font-family: 'Cinzel', serif;
+            font-weight: bolder;
         }
 
         .delete-button:hover {
@@ -176,8 +179,9 @@
             padding: 10px 0;
             text-align: center;
             width: 100%;
-            position: fixed;
-            bottom: 0;
+            position: fixed; /* Fix footer to bottom */
+            bottom: 0; /* Align to bottom */
+            left: 0; /* Align to left */
         }
 
         footer p {
@@ -230,7 +234,7 @@
     <!-- Back Button -->
     <div>
         <a href="{% url 'homepage' %}">
-            <button class="back-button">Back to Home</button>
+            <button class="back-button">BACK TO HOME</button>
         </a>
     </div>
 
@@ -258,7 +262,7 @@
                     {% endif %}
                     <form method="POST" action="{% url 'delete_recipe' recipe.id %}" style="display:inline;">
                         {% csrf_token %}
-                        <button type="submit" class="delete-button">Delete Recipe</button>
+                        <button type="submit" class="delete-button">DELETE RECIPE</button>
                     </form>
                 </div>
                 {% endfor %}
@@ -279,10 +283,14 @@
                         {% if saved_recipe.recipe.image %}
                             <img src="{{ saved_recipe.recipe.image.url }}" alt="{{ saved_recipe.recipe.title }}"/>
                         {% endif %}
+                        <form method="POST" action="{% url 'unsave_recipe' saved_recipe.pk %}" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="delete-button">UNSAVE RECIPE</button>
+                        </form>
                     </div>
                 {% endfor %}
             {% else %}
-                <p>You have not saved any recipes yet.</p>
+                <p>No saved recipes found.</p>
             {% endif %}
         </div>
     </div>
@@ -291,11 +299,6 @@
     <footer>
         <p>&copy; 2024 Pastry Paradise. All rights reserved.</p>
     </footer>
-
-    <!-- Bootstrap JS and dependencies -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
+    
 </body>
 </html>

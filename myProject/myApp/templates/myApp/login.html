@@ -52,11 +52,19 @@
             padding: 8px 15px;
             border-radius: 5px;
             transition: background-color 0.3s;
-            font-family: 'Cinzel', serif;
+            font-family: 'Cinzel', serif; /* Apply Cinzel font here */
         }
 
         nav ul li a:hover {
             background-color: #d6efed;
+        }
+
+        /* Logo text styling */
+        .logo h2 {
+            font-family: 'Cinzel', serif; /* Match Cinzel font here */
+            font-size: 30px; /* Adjust size as needed */
+            color: white;
+            margin: 0;
         }
 
         /* Login container styling */
@@ -146,7 +154,7 @@
     <nav>
         <div class="logo">
             <a href="{% url 'homepage' %}" style="color: white; text-decoration: none;">
-                <h2>Pastry Paradise</h2>
+                <h2>Pastry Paradise</h2> <!-- Logo text styled with Cinzel -->
             </a>
         </div>
         <ul>
