@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Pastry Paradise</title>
+    <!--Google Fonts-->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@300;500;700&display=swap" rel="stylesheet">
+    <!--Bootstrap CSS-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* General body styles */
+        body {
+            font-family: 'Cinzel', serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            padding-bottom: 50px; /* Ensure footer doesn't overlap */
+        }
+
+        /* Navbar styling */
+        nav {
+            background-color: #87CEEB;
+            color: white;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        nav ul li {
+            margin-right: 20px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        nav ul li a:hover {
+            background-color: #d6efed;
+        }
+
+        /* Hero section */
+        .hero {
+            padding: 40px 20px;
+            color: black;
+            text-align: center;
+            margin: 0;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        /* Contact Form styling */
+        .contact-container {
+            max-width: 800px;
+            margin: auto;
+            background: linear-gradient(135deg, #d6efed, #87CEEB);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h3 {
+            color: black;
+            background-color: white;
+            display: inline-block;
+            font-weight: bolder;
+            margin-bottom: 20px;
+        }
+
+        /* Footer styling */
+        footer {
+            background-color: #87CEEB;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            position: relative;
+            margin-top: 50px;
+        }
+
+        footer p {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <!--Navbar-->
+    <nav>
+        <div class="logo">
+            <a href="{% url 'homepage' %}" style="color: white; text-decoration: none;">
+                <h2>Pastry Paradise</h2>
+            </a>
+        </div>
+        <ul>
+            <li><a href="{% url 'homepage' %}">Home</a></li>
+            <li><a href="{% url 'about_us' %}">About Us</a></li>
+            {% if user.is_authenticated %}
+                <li><a href="{% url 'profile' %}">My Profile</a></li>
+                <li><a href="{% url 'create_recipe' %}">Create Recipe</a></li>
+                <li><a href="{% url 'logout' %}">Logout</a></li>
+            {% else %}
+                <li><a href="{% url 'login' %}">Login</a></li>
+                <li><a href="{% url 'register' %}">Register</a></li>
+            {% endif %}
+            <li><a href="{% url 'all_recipes' %}">All Recipes</a></li>
+        </ul>
+    </nav>
+    
+    <!--Hero Section-->
+    <section class="hero">
+        <h1>Contact Us</h1>
+        <h4>We'd love to hear from you!</h4>
+    </section>
+
+    <!--Contact Us Content-->
+    <div class="contact-container">
+        <h3>Get in Touch</h3>
+        <form>
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" class="form-control" id="name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" class="form-control" id="email" required>
+            </div>
+            <div class="form-group">
+                <label for="message">Message:</label>
+                <textarea class="form-control" id="message" rows="5" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Send Message</button>
+        </form>
+        <hr>
+        <h3>Contact Information</h3>
+        <p>Email: support@pastryparadise.com</p>
+        <p>Phone: +1 (234) 567-890</p>
+        <p>Address: 123 Pastry Lane, Sweet City, CA 90210</p>
+    </div>
+
+    <!--Footer-->
+    <footer>
+        <div>&copy; 2024 Pastry Paradise. All Rights Reserved.</div>
+    </footer>
+
+    <!--Bootstrap JS and dependencies-->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

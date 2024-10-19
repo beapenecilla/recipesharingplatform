@@ -62,35 +62,38 @@ nav ul {
             display: flex;
             justify-content: center;
             margin: 100px auto;
-            max-width: 1200px;
+            max-width: 1500px;
             padding: 20px;
             gap: 20px;
         }
         /* Left side for recipe details */
         .recipe-container, .right-side {
             flex: 30%;
-            background-color: #87ceeb;
+            background-color: #bfebfc;
             padding: 15px;
             border-radius: 10px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
         }
         h1 {
-            color: #333; /* Changed title color for better contrast */
+            color: #000000; /* Changed title color for better contrast */
             text-align: center;
             font-size: 2.5em; /* Increased title size */
             margin-bottom: 10px; /* Spacing below the title */
+            background-color: white;
         }
         h2 {
-            color: #333; /* Changed heading color for better contrast */
+            color: #000000; /* Changed heading color for better contrast */
             text-align: center;
             font-size: 1.8em; /* Increased size for secondary headings */
             margin: 20px 0 10px; /* Spacing above and below headings */
         }
         p {
             line-height: 1.5;
-            color: #555; /* Changed paragraph text color */
+            color: #000000; /* Changed paragraph text color */
             font-size: 1em; /* Set paragraph font size */
             margin: 10px 0; /* Added spacing for paragraphs */
+            background-color: white;
+            font-weight: bolder;
         }
         img {
             max-width: 100%;
@@ -123,7 +126,7 @@ nav ul {
         }
 
         .star-rating input:checked ~ label {
-            color: #f6ee14dc;
+            color: #ffa811dc;
             transform: scale(1.2);
         }
 
@@ -150,7 +153,7 @@ nav ul {
             box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
         }
         .comment strong {
-            color: #87ceeb;
+            color: black;
         }
         .comment small {
             font-size: 0.9em;
@@ -158,7 +161,7 @@ nav ul {
         }
         /* Comment form */
         .comment-form textarea {
-            width: 90%;
+            width: 95%;
             height: 60px;
             margin-top: 10px;
             padding: 10px;
@@ -172,7 +175,7 @@ nav ul {
             box-shadow: 0 0 10px rgba(136, 221, 255, 0.5);
         }
         button {
-            background-color: #87ceeb; /* Button color */
+            background-color: #000000; /* Button color */
             color: white;
             border: none;
             padding: 10px 15px;
@@ -186,6 +189,7 @@ nav ul {
         button:hover {
             background-color: #d6efed;
             transform: scale(1.05);
+            color: #000000;
         }
      /* Back button styling */
 .back-button-container {
@@ -211,6 +215,7 @@ nav ul {
 .back-button-container button:hover {
     background-color: #d6efed;
     transform: scale(1.05);
+    
 }
 
         footer {
@@ -251,6 +256,7 @@ nav ul {
         </div>
         <ul>
             <li><a href="{% url 'homepage' %}">Home</a></li>
+            <li><a href="{% url 'about_us' %}">ABOUT US</a></li>
             {% if user.is_authenticated %}
                 <li><a href="{% url 'profile' %}">My Profile</a></li>
                 <li><a href="{% url 'create_recipe' %}">Create Recipe</a></li>
@@ -267,9 +273,9 @@ nav ul {
         <!-- Recipe Container (left) -->
         <div class="recipe-container">
             <h1>{{ recipe.title }}</h1>
-            <p><strong>Ingredients:</strong></p>
+            <h3><strong>Ingredients:</strong></h3>
             <p>{{ recipe.ingredients }}</p>
-            <p><strong>Steps:</strong></p>
+            <h3><strong>Steps:</strong></h3>
             <p>{{ recipe.steps }}</p>
             {% if recipe.image %}
                 <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}">
@@ -306,7 +312,7 @@ nav ul {
                     </form>
                 </div>
             {% else %}
-                <p>You must be logged in to leave a comment.</p>
+                <h3>You must be logged in to leave a comment.</h3>
             {% endif %}
             <h2>Rate this Recipe</h2>
 {% if user.is_authenticated %}
@@ -327,14 +333,14 @@ nav ul {
             </div>
             <button type="submit">Submit Rating</button>
             {% if average_rating %}
-                <p class="average-rating">Average Rating: {{ average_rating|floatformat:1 }} / 5</p>
+                <h3 class="average-rating">Average Rating: {{ average_rating|floatformat:1 }} / 5</h3>
             {% else %}
-                <p class="average-rating">No ratings yet.</p>
+                <h3 class="average-rating">No ratings yet.</h3>
             {% endif %}
         </form>
     </div>
 {% else %}
-    <p>You must be logged in to rate this recipe.</p>
+    <h3>You must be logged in to rate this recipe.</h3>
 {% endif %}
 
         </div>
@@ -346,7 +352,7 @@ nav ul {
         </a>
     </div>
     <footer>
-        <p>&copy; 2024 Pastry Paradise. All rights reserved.</p>
+        <div>&copy; 2024 Pastry Paradise. All rights reserved.</div>
     </footer>
 </body>
 </html>

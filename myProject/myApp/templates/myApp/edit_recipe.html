@@ -163,6 +163,7 @@
         </div>
         <ul>
             <li><a href="{% url 'homepage' %}">HOME</a></li>
+            <li><a href="{% url 'about_us' %}">ABOUT US</a></li>
             {% if user.is_authenticated %}
                 <li><a href="{% url 'profile' %}">MY PROFILE</a></li>
                 <li><a href="{% url 'create_recipe' %}">CREATE RECIPE</a></li>

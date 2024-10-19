@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Pastry Paradise</title>
+    <!--Google Fonts-->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@300;500;700&display=swap" rel="stylesheet">
+    <!--Bootstrap CSS-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* General body styles */
+        body {
+            font-family: 'Cinzel', serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            padding-bottom: 50px; /* Ensure footer doesn't overlap */
+        }
+
+        /* Navbar styling */
+        nav {
+            background-color: #87CEEB;
+            color: white;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        nav ul li {
+            margin-right: 20px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        nav ul li a:hover {
+            background-color: #d6efed;
+        }
+
+        /* Hero section */
+        .hero {
+            padding: 40px 20px;
+            color: black;
+            text-align: center;
+            margin: 0;
+        }
+
+        .hero h1 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 30px;
+            margin-bottom: 30px;
+        }
+
+        /* About Us content styling */
+        .about-container {
+            max-width: 1800px;
+            margin: auto;
+            background: linear-gradient(135deg, #d6efed, #87CEEB); /* Gradient from light to dark blue */
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #ffffff; 
+        }
+        h3 {
+            color: black;
+            background-color:white;
+            display: inline-block;
+            font-weight: bolder;
+        }
+        h4 {
+            font-size: 28px;
+        }
+        p {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        /* Footer styling */
+        footer {
+            background-color: #87CEEB;
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            position: relative;
+            margin-top: 50px;
+        }
+
+        footer p {
+            margin: 0;
+        }
+        .btn-primary {
+            background-color:#87CEEB; /* Change the primary button color */
+            font-size: 35px;
+        }
+
+        .btn-primary:hover {
+          background-color: #ffffff; 
+          color: black;
+        }
+
+    </style>
+</head>
+<body>
+    <!--Navbar-->
+    <nav>
+        <div class="logo">
+            <a href="{% url 'homepage' %}" style="color: white; text-decoration: none;">
+                <h2>Pastry Paradise</h2>
+            </a>
+        </div>
+        <ul>
+            <li><a href="{% url 'homepage' %}">Home</a></li>
+            <li><a href="{% url 'about_us' %}">About Us</a></li>
+            {% if user.is_authenticated %}
+                <li><a href="{% url 'profile' %}">My Profile</a></li>
+                <li><a href="{% url 'create_recipe' %}">Create Recipe</a></li>
+                <li><a href="{% url 'logout' %}">Logout</a></li>
+            {% else %}
+                <li><a href="{% url 'login' %}">Login</a></li>
+                <li><a href="{% url 'register' %}">Register</a></li>
+            {% endif %}
+            <li><a href="{% url 'all_recipes' %}">All Recipes</a></li>
+        </ul>
+    </nav>
+    
+    <!--Hero Section-->
+    <section class="hero">
+        <h1>About Us</h1>
+        <h4>Welcome to <strong>Pastry Paradise</strong>, your one-stop destination for discovering, sharing, and creating delightful pastry recipes!</h4>
+    </section>
+
+    <!--About Us Content-->
+    <div class="about-container">
+        <h3>Our Story</h3>
+        <p>At <strong>Pastry Paradise</strong>, we believe that baking is more than just a hobby—it's an art form. Our journey started with a simple passion for pastries and a desire to share that love with a community of like-minded pastry enthusiasts. We wanted to create a space where anyone, from novices to experts, can explore the world of pastries, from the classic croissants and éclairs to modern-day twists on traditional treats.</p>
+
+        <h3>What We Offer</h3>
+        <p>Our platform is dedicated exclusively to pastries. Here, you can:</p>
+        <ul>
+            <p><strong>Explore Recipes:</strong> Discover a wide variety of pastry recipes from around the world, shared by bakers just like you.</p>
+            <p><strong>Share Your Creations:</strong> Upload your favorite pastry recipes, complete with step-by-step instructions and photos.</p>
+            <p><strong>Get Inspired:</strong> Browse through curated collections, trending recipes, and seasonal favorites that cater to every skill level and taste.</p>
+            <p><strong>Connect with Fellow Bakers:</strong> Leave reviews, comment on recipes, and share your recipes with us</p>
+        </ul>
+
+        <h3>Our Mission</h3>
+        <p>Our mission is simple: to foster a community where pastry lovers can come together to celebrate the joy of baking. We want to make it easy for everyone to bake their favorite pastries at home while also learning new techniques and discovering unique flavors. At <strong>Pastry Perfection</strong>, we believe that with a little patience and passion, anyone can master the art of pastry-making.</p>
+
+        <h3>Join Us!</h3>
+        <p>Become a part of the <strong>Pastry Paradise</strong> community today and start your journey toward pastry mastery. Whether you’re baking for fun, experimenting with new techniques, or perfecting your signature recipe, we’re here to support you every step of the way.</p>
+    </div>
+
+    <section class="hero"> 
+        <h4>Let’s bake something beautiful together!</h4>
+        <a href="{% url 'contact' %}" class="btn btn-primary">Contact Us</a> <!-- Clickable link to contact us page -->
+    </section>
+
+    <!--Footer-->
+    <footer>
+        <div>&copy; 2024 Pastry Paradise. All Rights Reserved.</div>
+    </footer>
+
+    <!--Bootstrap JS and dependencies-->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -69,7 +69,7 @@
 
         /* Login container styling */
         .login-container {
-            background-color: #b7d3df; /* Changed login container color */
+            background-color:#87CEEB; 
             border-radius: 10px;
             padding: 40px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
@@ -101,7 +101,7 @@
         }
 
         .login-container form button {
-            background-color: #87CEEB; /* Change button color */
+            background-color: #000000; /* Change button color */
             color: white;
             padding: 10px;
             border: none;
@@ -113,6 +113,7 @@
 
         .login-container form button:hover {
             background-color: #d6efed; /* Optional hover color */
+            color: #000000;
         }
 
         .login-container a {
@@ -159,6 +160,7 @@
         </div>
         <ul>
             <li><a href="{% url 'homepage' %}">Home</a></li>
+            <li><a href="{% url 'about_us' %}">About Us</a></li>
             {% if user.is_authenticated %}
                 <li><a href="{% url 'profile' %}">My Profile</a></li>
                 <li><a href="{% url 'create_recipe' %}">Create Recipe</a></li>

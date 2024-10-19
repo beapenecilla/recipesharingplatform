@@ -22,10 +22,9 @@
             background-color: #f8f9fa;
             display: flex;
             flex-direction: column;
-            min-height: 100vh; /* Ensure the body takes the full height */
+            min-height: 100vh;
         }
 
-        /* Navbar styling */
         nav {
             background-color: #87CEEB;
             color: white;
@@ -34,7 +33,7 @@
             justify-content: space-between;
             align-items: center;
             width: 100%;
-            position: fixed; /* Fix navbar to top */
+            position: fixed;
             top: 0;
             left: 0;
             z-index: 1000;
@@ -63,9 +62,15 @@
             background-color: #b7d3df;
         }
 
-        /* Back button styling */
+        .back-and-username-container {
+            display: flex;
+            align-items: center;
+            margin-top: 75px; /* To position below the navbar */
+            margin-left: 10px;
+            gap: 50px;
+        }
+
         .back-button {
-            margin: 20px;
             background-color: #87CEEB;
             color: white;
             border: none;
@@ -73,27 +78,28 @@
             padding: 10px 15px;
             cursor: pointer;
             transition: background-color 0.3s;
-            position: relative;
-            top: 60px; /* Adjust to position below navbar */
         }
 
         .back-button:hover {
             background-color: #b7d3df;
         }
 
-        /* Main profile content layout */
+        .username {
+            font-size: 30px;
+            color: #000000;
+            font-weight: 500;
+        }
+
         .profile-content {
             display: flex;
             gap: 20px;
             width: 100%;
-            max-width: 1200px;
-            margin: 120px auto 20px auto; /* Adjust margin to accommodate fixed navbar */
+            max-width: 2000px;
+            margin: 20px auto;
             padding: 0 20px;
-            flex: 1; /* Allow the profile content to grow and fill the available space */
-            margin-top: -100px;
+            flex: 1;
         }
 
-        /* My Recipes container */
         .my-recipes-container,
         .saved-recipes-container {
             flex: 1;
@@ -102,9 +108,9 @@
             padding: 20px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             display: flex;
-            flex-direction: column; /* Align items vertically */
-            align-items: center; /* Center items horizontally */
-            width: 48%; /* Set width for alignment */
+            flex-direction: column;
+            align-items: center;
+            width: 48%;
         }
 
         h1 {
@@ -115,44 +121,15 @@
             text-align: center;
         }
 
-        .username {
-            font-size: 30px;
-            color: #000000;
-            font-weight: 500;
-            margin: 20px 0 20px 20px;
-            margin-top: 100px;
-        }
-
-        /* Profile image section */
-        .profile-image-container {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .profile-image {
-            border-radius: 50%;
-            width: 100px;
-            height: 100px;
-            object-fit: cover;
-        }
-
-        /* Dropdown section */
-        .dropdown-container {
-            display: none;
-            text-align: center;
-            margin-top: 10px;
-        }
-
-        /* Recipe styling */
         .recipe {
             text-align: center;
             margin-bottom: 20px;
-            width: 100%; /* Full width for recipe items */
+            width: 100%;
         }
 
         img {
-            max-width: 100%; 
-            height: auto; /* Ensure images are responsive */
+            max-width: 100%;
+            height: auto;
         }
 
         .delete-button {
@@ -172,23 +149,21 @@
             background-color: white;
         }
 
-        /* Footer */
         footer {
             background-color: #87CEEB;
             color: white;
             padding: 10px 0;
             text-align: center;
             width: 100%;
-            position: fixed; /* Fix footer to bottom */
-            bottom: 0; /* Align to bottom */
-            left: 0; /* Align to left */
+            position: fixed;
+            bottom: 0;
+            left: 0;
         }
 
         footer p {
             margin: 0;
         }
 
-        /* Responsive Design */
         @media (max-width: 768px) {
             .profile-content {
                 flex-direction: column;
@@ -198,6 +173,11 @@
             .saved-recipes-container {
                 flex: none;
                 width: 100%;
+            }
+
+            .back-and-username-container {
+                flex-direction: column;
+                text-align: center;
             }
         }
     </style>
@@ -210,7 +190,6 @@
 </head>
 <body>
 
-    <!-- Navbar -->
     <nav>
         <div class="logo">
             <a href="{% url 'homepage' %}" style="color: white; text-decoration: none;">
@@ -219,6 +198,7 @@
         </div>
         <ul>
             <li><a href="{% url 'homepage' %}">HOME</a></li>
+            <li><a href="{% url 'about_us' %}">ABOUT US</a></li>
             {% if user.is_authenticated %}
                 <li><a href="{% url 'profile' %}">MY PROFILE</a></li>
                 <li><a href="{% url 'create_recipe' %}">CREATE RECIPE</a></li>
@@ -231,71 +211,73 @@
         </ul>
     </nav>
 
-    <!-- Back Button -->
-    <div>
+    <div class="back-and-username-container">
         <a href="{% url 'homepage' %}">
             <button class="back-button">BACK TO HOME</button>
         </a>
-    </div>
-
-    <div>
         {% if user.is_authenticated %}
-        <div class="username">
-            Welcome, {{ user.username }}!  
-        </div>
+            <div class="username">Welcome, {{ user.username }}!</div>
         {% endif %}
     </div>
 
-    <!-- Main Profile Content -->
     <div class="profile-content">
-        <!-- My Recipes Container (Left) -->
         <div class="my-recipes-container">
             <h1>Your Recipes</h1>
             {% if recipes %}
-                {% for recipe in recipes %}
-                <div class="recipe">
-                    <h2>{{ recipe.title }}</h2>
-                    <p><strong>Ingredients:</strong> {{ recipe.ingredients }}</p>
-                    <p><strong>Steps:</strong> {{ recipe.steps }}</p>
-                    {% if recipe.image %}
-                        <img src="{{ recipe.image.url }}" alt="{{ recipe.title }}"/>
-                    {% endif %}
-                    <form method="POST" action="{% url 'delete_recipe' recipe.id %}" style="display:inline;">
-                        {% csrf_token %}
-                        <button type="submit" class="delete-button">DELETE RECIPE</button>
-                    </form>
+                <div class="row">
+                    {% for recipe in recipes %}
+                    <div class="col-md-6 mb-4">
+                        <div class="card h-100">
+                            <img class="card-img-top" src="{{ recipe.image.url }}" alt="{{ recipe.title }}" style="object-fit: cover; height: 200px;">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ recipe.title }}</h5>
+                                <p class="card-text"><strong>Ingredients:</strong> {{ recipe.ingredients }}</p>
+                                <p class="card-text"><strong>Steps:</strong> {{ recipe.steps }}</p>
+                            </div>
+                            <div class="card-footer text-center">
+                                <form method="POST" action="{% url 'delete_recipe' recipe.id %}" style="display:inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="delete-button">DELETE RECIPE</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
                 </div>
-                {% endfor %}
             {% else %}
                 <p>No recipes found.</p>
             {% endif %}
         </div>
 
-        <!-- Saved Recipes Container (Right) -->
         <div class="saved-recipes-container">
             <h1>Your Saved Recipes</h1>
             {% if saved_recipes %}
-                {% for saved_recipe in saved_recipes %}
-                    <div class="recipe">
-                        <h2>{{ saved_recipe.recipe.title }}</h2>
-                        <p><strong>Ingredients:</strong> {{ saved_recipe.recipe.ingredients }}</p>
-                        <p><strong>Steps:</strong> {{ saved_recipe.recipe.steps }}</p>
-                        {% if saved_recipe.recipe.image %}
-                            <img src="{{ saved_recipe.recipe.image.url }}" alt="{{ saved_recipe.recipe.title }}"/>
-                        {% endif %}
-                        <form method="POST" action="{% url 'unsave_recipe' saved_recipe.pk %}" style="display:inline;">
-                            {% csrf_token %}
-                            <button type="submit" class="delete-button">UNSAVE RECIPE</button>
-                        </form>
+                <div class="row">
+                    {% for saved_recipe in saved_recipes %}
+                    <div class="col-md-6 mb-4">
+                        <div class="card h-100">
+                            <img class="card-img-top" src="{{ saved_recipe.recipe.image.url }}" alt="{{ saved_recipe.recipe.title }}" style="object-fit: cover; height: 200px;">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ saved_recipe.recipe.title }}</h5>
+                                <p class="card-text"><strong>Ingredients:</strong> {{ saved_recipe.recipe.ingredients }}</p>
+                                <p class="card-text"><strong>Steps:</strong> {{ saved_recipe.recipe.steps }}</p>
+                            </div>
+                            <div class="card-footer text-center">
+                                <form method="POST" action="{% url 'unsave_recipe' saved_recipe.pk %}" style="display:inline;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="delete-button">UNSAVE RECIPE</button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
-                {% endfor %}
+                    {% endfor %}
+                </div>
             {% else %}
                 <p>No saved recipes found.</p>
             {% endif %}
         </div>
     </div>
 
-    <!-- Footer -->
     <footer>
         <p>&copy; 2024 Pastry Paradise. All rights reserved.</p>
     </footer>

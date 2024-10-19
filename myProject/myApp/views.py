@@ -164,3 +164,8 @@ def unsave_recipe(request, pk):
     saved_recipe.delete()
     return redirect('profile')
 
+def about(request):
+    return render(request, 'myApp/about_us.html')
+
+def contact(request):
+    return render(request, 'myApp/contact.html')
